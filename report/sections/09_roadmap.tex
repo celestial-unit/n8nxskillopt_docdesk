@@ -1,0 +1,36 @@
+% ============================================================
+%  Section 9 — Limitations and next experiments
+% ============================================================
+\section{Limitations and Next Experiments}
+\label{sec:roadmap}
+
+The project is a course prototype with useful evidence and important gaps. We
+prioritize the work by the evidence needed to make the company-adaptation claim
+reproducible.
+
+\begin{enumerate}[leftmargin=*, itemsep=3pt]
+  \item \textbf{Broaden SkillOpt evaluation.} The real library now runs through
+        the product API on balanced Company B TRAIN and SELECTION cohorts. The
+        next experiment should use the full held-out set, repeat with multiple
+        seeds, preserve all candidate traces, and evaluate a selected skill
+        once on TEST before claiming a company-wide gain.
+  \item \textbf{Confirm the targeted coding result.} Evaluate v003 on the full
+        Company B SELECTION and held-out TEST sets, with model calls paced to
+        stay within provider limits. Include code accuracy, citation support,
+        JSON parse rate, provider errors, and paired uncertainty.
+  \item \textbf{Strengthen retrieval evaluation.} The current rule corpus has
+        only a few chunks per company, making Recall@5 saturated. Re-chunk at
+        rule level, compare fixed and heading-based strategies on the same
+        queries and vector model, and report per-query results.
+  \item \textbf{Improve task quality.} Expand the synthetic corpus, audit
+        company-rule and gold-label consistency, and add independently labeled
+        real scans before making real-world accuracy claims. Keep arithmetic
+        validation deterministic and report error-type precision and recall.
+  \item \textbf{Harden deployment.} Add authentication, role-based review,
+        secret management, backups, retention controls, and monitoring before
+        using real company financial documents.
+\end{enumerate}
+
+No post-baseline score projections are reported. The next release should be
+judged by repeatable held-out measurements rather than a target inferred from
+unrelated benchmarks.

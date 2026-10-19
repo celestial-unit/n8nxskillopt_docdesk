@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Desk — Slide 02: The Problem</title>
+  <link rel="stylesheet" href="../styles/global.css">
+  <style>
+    .pain-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.1rem;
+      display: flex; flex-direction: column; gap: 0.6rem;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+    .pain-card:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+    .pain-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pain-title { font-weight: 700; font-size: 0.95rem; color: var(--text-primary); }
+    .pain-desc  { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <header class="slide-header">
+    <nav>
+      <a href="../index.html" class="nav-menu-link">Menu</a>
+      <span class="slide-counter">Slide 2 of 12</span>
+    </nav>
+    <div class="progress-bar-track"><div class="progress-bar-fill" style="width:16.7%"></div></div>
+  </header>
+
+  <main class="slide-content">
+
+    <div class="fade-up">
+      <span class="pill pill-error">Pain Points</span>
+      <h2 class="mt-sm">Manual document handling is broken.</h2>
+      <p class="mt-xs">Every small business fights the same six problems — every single day.</p>
+    </div>
+
+    <div class="grid-3 mt-lg" style="gap:1rem;">
+
+      <div class="pain-card fade-up-1" style="border-top:2px solid var(--error);">
+        <div class="pain-icon" style="background:var(--error-bg);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="4" rx="1"/><rect x="2" y="10" width="20" height="4" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/></svg>
+        </div>
+        <div class="pain-title">Manual Data Entry</div>
+        <div class="pain-desc">Hours re-keying invoice fields a machine reads in seconds.</div>
+        <span style="font-size:0.72rem;font-weight:700;color:var(--error);text-transform:uppercase;letter-spacing:0.08em;">High volume · Low value</span>
+      </div>
+
+      <div class="pain-card fade-up-2" style="border-top:2px solid var(--warn);">
+        <div class="pain-icon" style="background:var(--warn-bg);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="pain-title">Slow Processing</div>
+        <div class="pain-desc">Payment cycles stretch days in manual approval queues.</div>
+        <span style="font-size:0.72rem;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:0.08em;">Days → should be minutes</span>
+      </div>
+
+      <div class="pain-card fade-up-3" style="border-top:2px solid var(--error);">
+        <div class="pain-icon" style="background:var(--error-bg);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="pain-title">Coding Errors</div>
+        <div class="pain-desc">Wrong account codes, transposed amounts, wrong VAT rates.</div>
+        <span style="font-size:0.72rem;font-weight:700;color:var(--error);text-transform:uppercase;letter-spacing:0.08em;">Caught too late</span>
+      </div>
+
+      <div class="pain-card fade-up-4" style="border-top:2px solid var(--warn);">
+        <div class="pain-icon" style="background:var(--warn-bg);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </div>
+        <div class="pain-title">Duplicate Invoices</div>
+        <div class="pain-desc">Double-paying vendors without automated cross-checks.</div>
+        <span style="font-size:0.72rem;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:0.08em;">Embarrassingly common</span>
+      </div>
+
+      <div class="pain-card fade-up-5" style="border-top:2px solid var(--error);">
+        <div class="pain-icon" style="background:var(--error-bg);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--error)" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="pain-title">Missing Tax IDs</div>
+        <div class="pain-desc">Invalid tax numbers fail audits and block VAT recovery.</div>
+        <span style="font-size:0.72rem;font-weight:700;color:var(--error);text-transform:uppercase;letter-spacing:0.08em;">Compliance risk</span>
+      </div>
+
+      <div class="pain-card fade-up-6" style="border-top:2px solid var(--human);">
+        <div class="pain-icon" style="background:var(--human-bg);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--human)" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="pain-title">Costly Exceptions</div>
+        <div class="pain-desc">Every edge case escalates to a senior accountant.</div>
+        <span style="font-size:0.72rem;font-weight:700;color:var(--human);text-transform:uppercase;letter-spacing:0.08em;">Bottleneck + burnout</span>
+      </div>
+
+    </div>
+
+    <div class="highlight-box mt-lg fade-up-6">
+      <p><strong>The real cost:</strong> Accounting firms spend up to <strong>40% of staff time</strong> on document handling — work that produces zero strategic value.</p>
+    </div>
+
+  </main>
+
+  <footer class="slide-footer">
+    <div class="nav-btns">
+      <a href="01-title.html" class="nav-btn nav-btn-prev">← Prev</a>
+      <a href="03-why.html" class="nav-btn primary nav-btn-next">Next →</a>
+    </div>
+  </footer>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>

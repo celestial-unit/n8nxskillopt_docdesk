@@ -1,0 +1,951 @@
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "name": "Document Pipeline v2 (Optimized)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pipeline",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "bb115f42-324e-4dc9-a23c-7f1080185ff0",
+      "name": "1. Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        400
+      ],
+      "webhookId": "pipeline-v2-webhook"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.first().json.body || {};\nconst missing = [\"doc_id\", \"company_id\"].filter(k => !body[k]);\nif (missing.length) throw new Error(\"Missing required field(s): \" + missing.join(\", \"));\nconst filename = body.filename || \"\";\nconst text = body.text || \"\";\nconst ext = filename.split(\".\").pop().toLowerCase();\nconst head = text.slice(0, 80).toLowerCase();\nlet docType = \"invoice\";\nif (head.includes(\"bon de commande\") || head.includes(\"purchase order\")) docType = \"purchase_order\";\nelse if (head.includes(\"recu\") || head.includes(\"reçu\") || head.includes(\"receipt\")) docType = \"receipt\";\nreturn [{ json: { doc_id: body.doc_id, company_id: body.company_id, source: body.source || 'webhook', filename, file_b64: body.file_b64 || \"\", text, doc_type: docType, modality: [\"jpg\", \"jpeg\", \"png\", \"webp\"].includes(ext) ? \"photo\" : \"text\" } }];"
+      },
+      "id": "5f0c1a52-6a7e-4b8f-9d31-0c2e7a4b1001",
+      "name": "2. Router (Deterministic)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/route",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ doc_id: $json.doc_id, company_id: $json.company_id, filename: $json.filename, file_b64: $json.file_b64, text: $json.text }) }}",
+        "options": {}
+      },
+      "id": "d7842877-f9f0-40d9-a5a5-d584ed65cdfa",
+      "name": "3. Route + OCR",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        640,
+        400
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/extract",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ doc_id: $(\"3. Route + OCR\").first().json.doc_id, company_id: $(\"3. Route + OCR\").first().json.company_id, text: $(\"3. Route + OCR\").first().json.source_text, doc_type: $(\"3. Route + OCR\").first().json.doc_type }) }}",
+        "options": {}
+      },
+      "id": "e981b58d-6251-4b36-9134-9f8382f449d1",
+      "name": "3b. Extractor",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        860,
+        340
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const r = $(\"3. Route + OCR\").first().json;\nconst ex = $input.first().json;\nreturn [{ json: { doc_id: r.doc_id, company_id: r.company_id, doc_type: r.doc_type, extracted: ex.extracted || ex } }];"
+      },
+      "id": "5f0c1a52-6a7e-4b8f-9d31-0c2e7a4b1002",
+      "name": "4. Collect Extraction",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        860,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/validate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ doc_id: $json.doc_id, company_id: $json.company_id, extracted: $json.extracted }) }}",
+        "options": {}
+      },
+      "id": "2121819b-80b7-4335-9a13-cc58c947d3e9",
+      "name": "5. Validator (Python)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1080,
+        340
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/code",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ doc_id: $('4. Collect Extraction').first().json.doc_id, company_id: $('4. Collect Extraction').first().json.company_id, extracted: $('4. Collect Extraction').first().json.extracted, doc_type: $('4. Collect Extraction').first().json.doc_type, rag_enabled: true }) }}",
+        "options": {}
+      },
+      "id": "0ad43a3c-bdf3-4de1-af20-0961d9d72e9f",
+      "name": "6. Coder (RAG)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1300,
+        340
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const c = $('4. Collect Extraction').first().json;\nconst v = $('5. Validator (Python)').first().json;\nconst k = $input.first().json;\nreturn [{ json: { doc_id: c.doc_id, company_id: c.company_id, source: $('2. Router (Deterministic)').first().json.source, extracted: c.extracted, account_code: k.account_code, cited_rule: k.cited_rule, chunks: k.chunks, valid: v.valid, errors: v.errors || [], explanation: v.explanation, needs_review: Boolean(v.needs_review), skill_versions: { coder: k.skill_version, validator: v.skill_version } } }];"
+      },
+      "id": "5f0c1a52-6a7e-4b8f-9d31-0c2e7a4b1003",
+      "name": "7. Decision Logic",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c1a2b3c4-d5e6-4f70-8a91-b2c3d4e5f601",
+              "leftValue": "={{ $json.needs_review }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a83544a7-fbbb-49d2-94aa-022384324e2d",
+      "name": "8. IF needs_review",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1740,
+        340
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/handle",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ doc_id: $json.doc_id, company_id: $json.company_id, extracted: $json.extracted, validation: { errors: $json.errors, explanation: $json.explanation } }) }}",
+        "options": {}
+      },
+      "id": "5f0c1a52-6a7e-4b8f-9d31-0c2e7a4b1004",
+      "name": "9a. Exception Handler",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1960,
+        240
+      ],
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 1000,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/escalate",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ doc_id: $('7. Decision Logic').first().json.doc_id, company_id: $('7. Decision Logic').first().json.company_id, dossier: $json.escalation_dossier || $json }) }}",
+        "options": {}
+      },
+      "id": "5251039f-f8be-4266-aed9-5ee0e641f859",
+      "name": "10a. Escalate",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2180,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/accept",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ doc_id: $json.doc_id, company_id: $json.company_id }) }}",
+        "options": {}
+      },
+      "id": "825f74af-9bd7-41ca-b93c-a6b419b9e62d",
+      "name": "9b. Accept",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1960,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/fail",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ doc_id: $('2. Router (Deterministic)').first().json.doc_id, company_id: $('2. Router (Deterministic)').first().json.company_id, error: (typeof $json.error === 'object' && $json.error ? $json.error.message : $json.error) || 'Pipeline error' }) }}",
+        "options": {}
+      },
+      "id": "11dfe641-4936-4b61-865a-f03bf6c3394a",
+      "name": "Error. Fail",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1080,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { doc_id: $('7. Decision Logic').first().json.doc_id, decision: 'ESCALATED', account_code: $('7. Decision Logic').first().json.account_code, cited_rule: $('7. Decision Logic').first().json.cited_rule, errors: $('7. Decision Logic').first().json.errors, explanation: $('7. Decision Logic').first().json.explanation } }}",
+        "options": {}
+      },
+      "id": "5f0c1a52-6a7e-4b8f-9d31-0c2e7a4b1005",
+      "name": "11a. Respond ESCALATED",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2400,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { doc_id: $('7. Decision Logic').first().json.doc_id, decision: 'ACCEPTED', account_code: $('7. Decision Logic').first().json.account_code, cited_rule: $('7. Decision Logic').first().json.cited_rule, errors: $('7. Decision Logic').first().json.errors, explanation: $('7. Decision Logic').first().json.explanation } }}",
+        "options": {}
+      },
+      "id": "5f0c1a52-6a7e-4b8f-9d31-0c2e7a4b1006",
+      "name": "11b. Respond ACCEPTED",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2180,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { doc_id: $('2. Router (Deterministic)').first().json.doc_id, decision: 'FAILED', detail: $json } }}",
+        "options": {
+          "responseCode": 500
+        }
+      },
+      "id": "5f0c1a52-6a7e-4b8f-9d31-0c2e7a4b1007",
+      "name": "11c. Respond FAILED",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1300,
+        620
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## What this workflow does\n\n1. The webhook receives an uploaded document and company ID.\n2. A small deterministic node checks request fields and filename.\n3. FastAPI /route extracts PDF text or runs vision OCR for photos/scans and records route metadata.\n4. FastAPI runs Extractor, Validator and RAG-grounded Coder; each stage appends an audit event to traces.db.\n5. n8n branches to Accept or Exception Handler → Escalate, then returns the decision.\n\nInspect stored values in the DocDesk Document Ledger; export the current ledger as CSV for Excel.",
+        "height": 260,
+        "width": 620
+      },
+      "id": "5f0c1a52-6a7e-4b8f-9d31-0c2e7a4b1008",
+      "name": "Architecture Overview",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Why each component exists\n\n- n8n is the visible workflow coordinator: it passes data between steps and chooses the accept/escalate/fail branch.\n- FastAPI does document OCR, agent calls, RAG retrieval, validation, and SQLite writes.\n- The Validator uses Python checks first (amount arithmetic, required tax ID, duplicate marker); LLM explanation is conditional.\n- RAG returns company-specific rules to the Coder, which must cite a retrieved rule.\n- Each stage output and skill version is inspectable in the API trace and DocDesk ledger.\n- Human corrections are appended to the audit history; they do not overwrite the original extraction.",
+        "height": 260,
+        "width": 620
+      },
+      "id": "5f0c1a52-6a7e-4b8f-9d31-0c2e7a4b1009",
+      "name": "Design Decisions",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        860,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {
+          "q": "label:docdesk has:attachment {filename:pdf filename:png filename:jpg filename:jpeg filename:webp}"
+        },
+        "options": {
+          "downloadAttachments": true,
+          "dataPropertyAttachmentsPrefixName": "attachment_"
+        }
+      },
+      "id": "docdesk-gmail-·-invoice-attachments",
+      "name": "Gmail · Invoice Attachments",
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        180,
+        820
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const out = [];\nconst allowed = new Set([\"pdf\", \"png\", \"jpg\", \"jpeg\", \"webp\"]);\nfor (let i = 0; i < $input.all().length; i++) {\n  const item = $input.all()[i];\n  for (const [key, meta] of Object.entries(item.binary || {})) {\n    const filename = meta.fileName || key;\n    const ext = filename.split(\".\").pop().toLowerCase();\n    if (!allowed.has(ext)) continue;\n    const buffer = await this.helpers.getBinaryDataBuffer(i, key);\n    const clean = String(item.json.id || Date.now()).replace(/[^a-zA-Z0-9_-]/g, \"\");\n    out.push({json: {body: {doc_id: `email-${clean}-${key}`, company_id: \"company_b\", filename, file_b64: buffer.toString(\"base64\"), source: \"email\"}}});\n  }\n}\nreturn out;"
+      },
+      "id": "docdesk-normalize-email-attachments",
+      "name": "Normalize Email Attachments",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        820
+      ]
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "mode": "id",
+          "value": "REPLACE_WITH_DRIVE_FOLDER_ID"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "id": "docdesk-google-drive-·-new-file",
+      "name": "Google Drive · New File",
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        180,
+        1080
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "download",
+        "fileId": {
+          "mode": "id",
+          "value": "={{$json.id}}"
+        },
+        "options": {
+          "binaryPropertyName": "data"
+        }
+      },
+      "id": "docdesk-download-drive-file",
+      "name": "Download Drive File",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        440,
+        1080
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const out = [];\nconst allowed = new Set([\"pdf\", \"png\", \"jpg\", \"jpeg\", \"webp\"]);\nfor (let i = 0; i < $input.all().length; i++) {\n  const item = $input.all()[i];\n  const meta = item.binary?.data;\n  if (!meta) continue;\n  const filename = meta.fileName || item.json.name || \"drive-document.pdf\";\n  const ext = filename.split(\".\").pop().toLowerCase();\n  if (!allowed.has(ext)) continue;\n  const buffer = await this.helpers.getBinaryDataBuffer(i, \"data\");\n  const clean = String(item.json.id || Date.now()).replace(/[^a-zA-Z0-9_-]/g, \"\");\n  out.push({json: {body: {doc_id: `drive-${clean}`, company_id: \"company_b\", filename, file_b64: buffer.toString(\"base64\"), source: \"drive\"}}});\n}\nreturn out;"
+      },
+      "id": "docdesk-normalize-drive-file",
+      "name": "Normalize Drive File",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        680,
+        1080
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "docdesk-source-escalated",
+              "leftValue": "={{ $('2. Router (Deterministic)').first().json.source }}",
+              "rightValue": "webhook",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "docdesk-escalated-·-webhook-response?",
+      "name": "Escalated · Webhook response?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2180,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{json: {source: $('2. Router (Deterministic)').first().json.source, decision: 'ESCALATED'}}];"
+      },
+      "id": "docdesk-escalated-·-intake-complete",
+      "name": "Escalated · Intake complete",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2420,
+        490
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "docdesk-source-accepted",
+              "leftValue": "={{ $('2. Router (Deterministic)').first().json.source }}",
+              "rightValue": "webhook",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "docdesk-accepted-·-webhook-response?",
+      "name": "Accepted · Webhook response?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2180,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{json: {source: $('2. Router (Deterministic)').first().json.source, decision: 'ACCEPTED'}}];"
+      },
+      "id": "docdesk-accepted-·-intake-complete",
+      "name": "Accepted · Intake complete",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2420,
+        690
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "docdesk-source-failed",
+              "leftValue": "={{ $('2. Router (Deterministic)').first().json.source }}",
+              "rightValue": "webhook",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "docdesk-failed-·-webhook-response?",
+      "name": "Failed · Webhook response?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2180,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "return [{json: {source: $('2. Router (Deterministic)').first().json.source, decision: 'FAILED'}}];"
+      },
+      "id": "docdesk-failed-·-intake-complete",
+      "name": "Failed · Intake complete",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2420,
+        890
+      ]
+    }
+  ],
+  "connections": {
+    "1. Webhook": {
+      "main": [
+        [
+          {
+            "node": "2. Router (Deterministic)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2. Router (Deterministic)": {
+      "main": [
+        [
+          {
+            "node": "3. Route + OCR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4. Collect Extraction": {
+      "main": [
+        [
+          {
+            "node": "5. Validator (Python)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "5. Validator (Python)": {
+      "main": [
+        [
+          {
+            "node": "6. Coder (RAG)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error. Fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "6. Coder (RAG)": {
+      "main": [
+        [
+          {
+            "node": "7. Decision Logic",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error. Fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "7. Decision Logic": {
+      "main": [
+        [
+          {
+            "node": "8. IF needs_review",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "8. IF needs_review": {
+      "main": [
+        [
+          {
+            "node": "9a. Exception Handler",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "9b. Accept",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "9a. Exception Handler": {
+      "main": [
+        [
+          {
+            "node": "10a. Escalate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error. Fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "10a. Escalate": {
+      "main": [
+        [
+          {
+            "node": "Escalated · Webhook response?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "9b. Accept": {
+      "main": [
+        [
+          {
+            "node": "Accepted · Webhook response?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error. Fail": {
+      "main": [
+        [
+          {
+            "node": "Failed · Webhook response?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3. Route + OCR": {
+      "main": [
+        [
+          {
+            "node": "3b. Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error. Fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "3b. Extractor": {
+      "main": [
+        [
+          {
+            "node": "4. Collect Extraction",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error. Fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalated · Webhook response?": {
+      "main": [
+        [
+          {
+            "node": "11a. Respond ESCALATED",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Escalated · Intake complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accepted · Webhook response?": {
+      "main": [
+        [
+          {
+            "node": "11b. Respond ACCEPTED",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Accepted · Intake complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Failed · Webhook response?": {
+      "main": [
+        [
+          {
+            "node": "11c. Respond FAILED",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Failed · Intake complete",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail · Invoice Attachments": {
+      "main": [
+        [
+          {
+            "node": "Normalize Email Attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Email Attachments": {
+      "main": [
+        [
+          {
+            "node": "2. Router (Deterministic)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive · New File": {
+      "main": [
+        [
+          {
+            "node": "Download Drive File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Drive File": {
+      "main": [
+        [
+          {
+            "node": "Normalize Drive File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Drive File": {
+      "main": [
+        [
+          {
+            "node": "2. Router (Deterministic)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

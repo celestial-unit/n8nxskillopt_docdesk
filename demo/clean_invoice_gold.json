@@ -1,0 +1,24 @@
+{
+  "doc_id": "DEMO-A-CLEAN",
+  "doc_type": "receipt",
+  "fields": {
+    "supplier": "Carrefour Tunisie",
+    "date": "03/11/2024",
+    "number": "REC-7778",
+    "reference_unique": "REF-REC-165099",
+    "htva": "7 119,104",
+    "tva": "1 352,630",
+    "ttc": "8 471,734",
+    "timbre_fiscal": "0,600",
+    "matricule_fiscal": "6969030G",
+    "currency": "TND",
+    "line_descriptions": [
+      "Matériel de nettoyage",
+      "Consommables informatiques"
+    ]
+  },
+  "account_code": "606200",
+  "injected_errors": [],
+  "company_id": "company_a",
+  "applied_house_rules": []
+}

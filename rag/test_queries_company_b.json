@@ -1,0 +1,22 @@
+[
+  {"query": "Facture STEG électricité Company B quel code ?", "expected_sources": ["public_utilities.md"]},
+  {"query": "Facture SONEDE eau taux TVA 7%", "expected_sources": ["public_utilities.md"]},
+  {"query": "Téléphone internet Ooredoo code 6261-TE001", "expected_sources": ["telecommunications.md"]},
+  {"query": "Carburant Station Total 13% TVA", "expected_sources": ["fuel.md"]},
+  {"query": "EuroTech imported merchandise account code 6010-AC001", "expected_sources": ["purchases.md"]},
+  {"query": "Assurances AssurPlus Courtage code 6161", "expected_sources": ["insurance.md"]},
+  {"query": "Timbre fiscal exonéré TVA code 6370", "expected_sources": ["tax_and_stamp.md"]},
+  {"query": "Services bancaires frais commissions TVA 13%", "expected_sources": ["banking.md"]},
+  {"query": "What code for STEG invoice Company B?", "expected_sources": ["public_utilities.md"]},
+  {"query": "EuroTech imported goods account code", "expected_sources": ["purchases.md"]},
+  {"query": "insurance premium accounting code Tunisia", "expected_sources": ["insurance.md"]},
+  {"query": "fuel purchase 13% VAT account code", "expected_sources": ["fuel.md"]},
+  {"query": "Plan comptable Company B format 6010-CC001", "expected_sources": ["chart_of_accounts.md"]},
+  {"query": "Amortissements matériel informatique code", "expected_sources": ["chart_of_accounts.md"]},
+  {"query": "Honoraires consultants compte 6226", "expected_sources": ["chart_of_accounts.md"]},
+  {"query": "Orange Tunisie telecom internet facture", "expected_sources": ["telecommunications.md"]},
+  {"query": "Monoprix Carrefour fournitures bureau TVA 19%", "expected_sources": ["office_supplies.md"]},
+  {"query": "Conseil Audit Beta honoraires codification", "expected_sources": ["chart_of_accounts.md"]},
+  {"query": "Computer maintenance account code 6170-IT001", "expected_sources": ["it_and_equipment.md"]},
+  {"query": "accounts structure NNNN-CCNNN format Belgium B", "expected_sources": ["chart_of_accounts.md"]}
+]

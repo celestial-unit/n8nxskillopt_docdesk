@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Desk — Slide 01: Title</title>
+  <link rel="stylesheet" href="../styles/global.css">
+  <style>
+    .hero-wrap {
+      position: relative;
+      display: flex; flex-direction: column;
+      justify-content: center; min-height: 72vh;
+      overflow: hidden;
+    }
+    .hero-wrap > * { position: relative; z-index: 1; }
+    .orb-1 {
+      position: absolute; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(217,119,87,0.18) 0%, transparent 70%);
+      border-radius: 50%; top: -120px; right: -80px;
+      animation: pulse-glow 6s ease-in-out infinite;
+    }
+    .orb-2 {
+      position: absolute; width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(45,212,160,0.10) 0%, transparent 70%);
+      border-radius: 50%; bottom: -60px; left: -60px;
+      animation: pulse-glow 8s ease-in-out infinite reverse;
+    }
+    .stat-row {
+      display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem;
+    }
+    .stat-item {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 1rem 1.5rem; text-align: center;
+      min-width: 120px;
+    }
+    .stat-value { font-size: 2rem; font-weight: 800; line-height: 1; color: var(--accent-hover); }
+    .stat-label { font-size: 0.72rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.3rem; }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <header class="slide-header">
+    <nav>
+      <a href="../index.html" class="nav-menu-link">Menu</a>
+      <span class="slide-counter">Slide 1 of 12</span>
+    </nav>
+    <div class="progress-bar-track"><div class="progress-bar-fill" style="width:8.3%"></div></div>
+  </header>
+
+  <main class="slide-content">
+    <div class="hero-wrap">
+      <div class="orb-1"></div>
+      <div class="orb-2"></div>
+
+      <div class="fade-up" style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1.25rem;">
+        <div style="width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent-glow);"></div>
+        <span class="hero-eyebrow" style="margin:0;">Advanced Deep Learning: AI Automation · ESPRIT 2026–2027</span>
+      </div>
+
+      <h1 class="hero-title fade-up-1">
+        Document <span style="color:var(--accent-hover);">Desk</span>
+      </h1>
+
+      <p class="hero-subtitle fade-up-2">
+        AI back-office that reads, codes and validates your documents —<br>
+        no fine-tuning required.
+      </p>
+
+      <div class="fade-up-3" style="margin-top:1.75rem;display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
+        <div class="hero-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          No model fine-tuning
+        </div>
+        <div class="hero-tag" style="color:var(--training);border-color:var(--training-border);background:var(--training-bg);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Versioned SKILL.md
+        </div>
+        <div class="hero-tag" style="color:var(--human);border-color:var(--human-border);background:var(--human-bg);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Human-in-the-loop
+        </div>
+      </div>
+
+      <div class="stat-row fade-up-4">
+        <div class="stat-item">
+          <div class="stat-value">40%</div>
+          <div class="stat-label">Staff time saved</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" style="color:var(--training);">0</div>
+          <div class="stat-label">GPU required</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" style="color:var(--serving);">2–3<span style="font-size:1rem;">min</span></div>
+          <div class="stat-label">Per SkillOpt epoch</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" style="color:var(--human);">∞</div>
+          <div class="stat-label">Skill iterations</div>
+        </div>
+      </div>
+
+      <div class="fade-up-5" style="margin-top:1.75rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <span class="pill pill-serving">Serving Plane — n8n</span>
+        <span class="pill pill-training">Training Plane — FastAPI</span>
+        <span class="pill pill-human">Human Review</span>
+      </div>
+    </div>
+  </main>
+
+  <footer class="slide-footer">
+    <div class="nav-btns">
+      <span class="nav-btn disabled nav-btn-prev">← Prev</span>
+      <span class="muted">ESPRIT · Advanced Deep Learning 2026–2027</span>
+      <a href="02-problem.html" class="nav-btn primary nav-btn-next">Next →</a>
+    </div>
+  </footer>
+
+  <script src="../js/nav.js"></script>
+</body>
+</html>

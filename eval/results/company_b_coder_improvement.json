@@ -1,0 +1,253 @@
+{
+  "experiment": "company_b_coder_prompt_improvement",
+  "status": "complete",
+  "split": "SELECTION",
+  "sample_size": 10,
+  "sample_ids": [
+    "B-DOC-0113",
+    "B-DOC-0129",
+    "B-DOC-0089",
+    "B-DOC-0002",
+    "B-DOC-0010",
+    "B-DOC-0073",
+    "B-DOC-0116",
+    "B-DOC-0142",
+    "B-DOC-0149",
+    "B-DOC-0057"
+  ],
+  "input_policy": "gold extracted fields; isolates coding prompt",
+  "rag_policy": "same company-filtered top-5 chunks per document",
+  "prompt_sha256": {
+    "baseline_v001": "7bd4bbed12a19bba6627ed4ea05c3d7a47baef22c1b5ee13bdcf340cda6350d9",
+    "improved_v004": "d653485345667940eb0d0909bf86e6b7062d0ccb9528b3ae5e9eeff698e3c142"
+  },
+  "results": {
+    "baseline_v001": [
+      {
+        "id": "B-DOC-0113",
+        "gold_code": "6226-HO001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6010-AC002",
+        "cited_rule": "Aucune règle spécifique — code par défaut 6010-AC002 utilisé",
+        "latency_ms": 3160
+      },
+      {
+        "id": "B-DOC-0129",
+        "gold_code": "6226-HO001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6170-IT001",
+        "cited_rule": "Use **6170-IT001** for IT services and computer maintenance, with 19% TVA in the pilot policy",
+        "latency_ms": 3086
+      },
+      {
+        "id": "B-DOC-0089",
+        "gold_code": "6060-EN001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6010-AC002",
+        "cited_rule": "Aucune règle spécifique — code par défaut 6010-AC002 utilisé",
+        "latency_ms": 6573
+      },
+      {
+        "id": "B-DOC-0002",
+        "gold_code": "6060-EA001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6060-EA001",
+        "cited_rule": "Use **6060-EA001** for SONEDE water invoices; the policy assigns 7% TVA. Confirm the supplier and service description before choosing between electricity and water.",
+        "latency_ms": 2941
+      },
+      {
+        "id": "B-DOC-0010",
+        "gold_code": "6261-TE001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6261-TE001",
+        "cited_rule": "Use **6261-TE001** for telephone and internet service invoices from Tunisie Telecom, Ooredoo, and Orange Tunisie. The pilot policy assigns 19% TVA to these services. This account applies to telecom subscriptions, not electricity or other utility services.",
+        "latency_ms": 6540
+      },
+      {
+        "id": "B-DOC-0073",
+        "gold_code": "6060-FO001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6060-FO001",
+        "cited_rule": "Use **6060-FO001** for office supplies and ordinary consumables bought from Monoprix or Carrefour. The pilot policy assigns 19% TVA.",
+        "latency_ms": 5131
+      },
+      {
+        "id": "B-DOC-0116",
+        "gold_code": "6060-CA001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-CA001",
+        "cited_rule": "6060-CA001  | Carburant et lubrifiant                     | 13%            |",
+        "latency_ms": 13391
+      },
+      {
+        "id": "B-DOC-0142",
+        "gold_code": "6170-IT001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6170-IT001",
+        "cited_rule": "| 6170-IT001  | Prestations informatiques et maintenance    | 19%            |",
+        "latency_ms": 2786
+      },
+      {
+        "id": "B-DOC-0149",
+        "gold_code": "6226-HO001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6226-HO001",
+        "cited_rule": "6226-HO001  Honoraires consultants                      19%",
+        "latency_ms": 4040
+      },
+      {
+        "id": "B-DOC-0057",
+        "gold_code": "6161-AS001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6161-AS001",
+        "cited_rule": "Use **6161-AS001** for insurance premiums from AssurPlus Courtage. The pilot policy assigns 7% TVA. Use this supplier-specific account for an insurance premium even when the invoice wording differs from the usual description.",
+        "latency_ms": 7873
+      }
+    ],
+    "improved_v004": [
+      {
+        "id": "B-DOC-0113",
+        "gold_code": "6226-HO001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6226-HO001",
+        "cited_rule": "For TechVision International, classify consulting, audit, market research, strategy, HR consulting, or professional honoraria as `6226-HO001`",
+        "latency_ms": 2727
+      },
+      {
+        "id": "B-DOC-0129",
+        "gold_code": "6226-HO001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6226-HO001",
+        "cited_rule": "classify consulting, audit, market research, strategy, HR consulting, or professional honoraria as `6226-HO001`",
+        "latency_ms": 1570
+      },
+      {
+        "id": "B-DOC-0089",
+        "gold_code": "6060-EN001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6060-EA001",
+        "cited_rule": "Use **6060-EA001** for SONEDE water invoices; the policy assigns 7% TVA.",
+        "latency_ms": 2361
+      },
+      {
+        "id": "B-DOC-0002",
+        "gold_code": "6060-EA001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-EA001",
+        "cited_rule": "SONEDE → `6060-EA001` (water)",
+        "latency_ms": 2373
+      },
+      {
+        "id": "B-DOC-0010",
+        "gold_code": "6261-TE001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6261-TE001",
+        "cited_rule": "Tunisie Telecom, Ooredoo, Orange → `6261-TE001` (telecommunications)",
+        "latency_ms": 1523
+      },
+      {
+        "id": "B-DOC-0073",
+        "gold_code": "6060-FO001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6060-FO001",
+        "cited_rule": "Use **6060-FO001** for office supplies and ordinary consumables bought from Monoprix or Carrefour.",
+        "latency_ms": 5081
+      },
+      {
+        "id": "B-DOC-0116",
+        "gold_code": "6060-CA001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-CA001",
+        "cited_rule": "Station Total / Total → `6060-CA001` (fuel)",
+        "latency_ms": 1386
+      },
+      {
+        "id": "B-DOC-0142",
+        "gold_code": "6170-IT001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6170-IT001",
+        "cited_rule": "EuroTech → `6170-IT001` (IT services and technical support)",
+        "latency_ms": 1793
+      },
+      {
+        "id": "B-DOC-0149",
+        "gold_code": "6226-HO001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6226-HO001",
+        "cited_rule": "Conseil & Audit Beta → `6226-HO001` (consulting and audit)",
+        "latency_ms": 2526
+      },
+      {
+        "id": "B-DOC-0057",
+        "gold_code": "6161-AS001",
+        "response_received": true,
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6161-AS001",
+        "cited_rule": "Use **6161-AS001** for insurance premiums from AssurPlus Courtage.",
+        "latency_ms": 1807
+      }
+    ]
+  },
+  "summary": {
+    "baseline_v001": {
+      "attempts": 10,
+      "responses": 10,
+      "parse_rate": 1.0,
+      "code_accuracy": 0.7,
+      "supported_coder_score": 0.2
+    },
+    "improved_v004": {
+      "attempts": 10,
+      "responses": 10,
+      "parse_rate": 1.0,
+      "code_accuracy": 0.9,
+      "supported_coder_score": 0.6
+    },
+    "paired_n": 10,
+    "paired_baseline_correct": 2,
+    "paired_improved_correct": 6,
+    "paired_delta_pp": 40.0,
+    "wins": 4,
+    "losses": 0,
+    "ties": 6
+  }
+}

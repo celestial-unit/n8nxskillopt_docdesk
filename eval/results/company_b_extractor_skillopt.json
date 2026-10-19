@@ -1,0 +1,57 @@
+{
+  "experiment": "company_b_extractor_skillopt_test",
+  "status": "complete",
+  "run_id": "20261019T155925Z",
+  "skill": "skills/company_b/extractor/v001.md",
+  "optimizer": "SkillOpt 0.1.0",
+  "model": "Kimi-K2.5",
+  "splits": {
+    "train": 12,
+    "selection": 20,
+    "test": 10
+  },
+  "dataset_sha256": {
+    "train": "20bf0d7e1d3f854e58bce6ce632979dbfab5a7ae7ce16f599f80bc4b44454eee",
+    "selection": "92ae6e089af52d5e355bc86e0ef37bba90430b2c3b5c57bf2a58f6f815823bbe",
+    "test": "8858e8f998aedbf40f114ca3f403d4ffbe724d9c0fffde33c7fdb73bd0ae2d75"
+  },
+  "optimization": {
+    "epochs": 1,
+    "train_steps": 3,
+    "accepted_edits": 0,
+    "skipped_edits": 3,
+    "baseline_selection_hard": 1.0,
+    "best_selection_hard": 1.0,
+    "best_skill_sha256": "cd0fd82e51704cda4492af3a90fcedbfbaa91b4f64710b267bb3845e978d0185",
+    "initial_skill_sha256": "cd0fd82e51704cda4492af3a90fcedbfbaa91b4f64710b267bb3845e978d0185"
+  },
+  "test": {
+    "metric": "normalized exact match per document",
+    "baseline_first_pass": {
+      "completed": 4,
+      "provider_failures": 6,
+      "exact_completed": 4
+    },
+    "baseline_after_retry": {
+      "completed": 10,
+      "provider_failures": 0,
+      "exact": 10,
+      "accuracy": 1.0
+    },
+    "selected_skill_rerun": {
+      "completed": 10,
+      "provider_failures": 0,
+      "exact": 10,
+      "accuracy": 1.0
+    },
+    "interpretation": "No measured difference: the selected skill is byte-identical to v001 and both completed evaluations scored 10/10 exact. The baseline score includes retries for the six initial provider connection failures."
+  },
+  "runtime_seconds": 1041.5,
+  "token_usage": {
+    "calls": 37,
+    "prompt_tokens": 24188,
+    "completion_tokens": 73617,
+    "total_tokens": 97805
+  },
+  "raw_artifacts": "skillopt_output/company_b_extractor/runs/20261019T155925Z"
+}

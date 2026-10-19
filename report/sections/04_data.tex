@@ -1,0 +1,86 @@
+% ============================================================
+%  Section 4 — Data
+% ============================================================
+\section{Synthetic Corpus}
+\label{sec:data}
+
+\subsection{Document Generation}
+
+We generate 300 documents (150 per company) using a deterministic Python generator
+seeded at 42, so every run produces the identical corpus. Documents are PDFs with
+a text layer (ReportLab~\cite{reportlab}) plus a degraded photo variant.
+All text is in French.
+
+Each generated document contains a selected set of accounting-style fields:
+supplier name, a synthetic matricule fiscal (7 digits + letter), date in
+\textit{jj/mm/aaaa} format,
+line items with HTVA/TVA/TTC amounts, a Timbre Fiscal line, and the document total.
+Amounts use the French format with a narrow no-break space as thousands separator
+(e.g., \textit{1\,011,500\,TND}).
+
+\textbf{Company A} uses TND currency, 19\% VAT on all lines, and six-character
+account codes such as \textit{606100}.
+
+\textbf{Company B} uses EUR and TND, tiered VAT at 7\%, 13\%, or 19\% per line,
+and account codes of the form \textit{6060-EN001}.
+
+Photo variants add synthetic degradation: rotation between 8° and 15°,
+Gaussian noise with $\sigma \in [15,20]$, and JPEG quality between 55 and 65.
+They are not a substitute for independently collected, real-world scans.
+
+\subsection{Error Injection}
+
+30\% of documents contain exactly one injected error:
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \textbf{Arithmetic mismatch}: the TTC printed on the document does not
+        equal HTVA + TVA, triggering the Validator's deterministic check.
+  \item \textbf{Missing matricule}: the supplier's tax identifier field is blank.
+  \item \textbf{Duplicate ID}: the document is marked as a copy of an existing
+        one via a \texttt{duplicate\_of} field.
+\end{itemize}
+
+Documents with injected errors should exit as \texttt{ESCALATED}; clean documents
+should exit as \texttt{ACCEPTED}. This gives us a ground-truth label for measuring
+Validator F-score.
+
+\subsection{Hidden House Rules}
+
+Each company has four hidden rules stored separately from the public RAG corpus
+and represented in generated gold metadata. Company B's rules cover EUR invoice
+conversion, review of high-value TechVision invoices, a fixed AssurPlus code,
+and a flag for Station Total purchase orders. The corpus generator also assigns
+TechVision consulting and audit line items to \texttt{6226-HO001}; seven such
+TRAIN examples support the v003 skill exception evaluated in
+\cref{sec:skillopt}. These company policies are synthetic and are not official
+Tunisian accounting guidance.
+
+\subsection{Splits and Integrity}
+
+\begin{table}[ht]
+\caption{Corpus statistics}
+\label{tab:corpus}
+\centering\scriptsize\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+\textbf{Split} & \textbf{Size} & \textbf{Co.\,A} & \textbf{Co.\,B} & \textbf{Purpose} \\
+\midrule
+TRAIN     & 140 & 70 & 70 & Skill development \\
+SELECTION & 60  & 30 & 30 & Baseline eval, validation \\
+TEST      & 100 & 50 & 50 & Final comparison (held-out) \\
+\midrule
+Total & 300 & 150 & 150 & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The SkillOpt pilot used a balanced sample of 12 Company B TRAIN and 12 Company B
+SELECTION items from the project data, rather than the full split. It did not
+evaluate the TEST partition.
+
+Seven automated integrity checks verify the corpus on every generation:
+unique IDs across all 300 documents, no document in more than one split,
+arithmetic consistency of all gold labels except injected-error documents,
+all account codes present in the company chart, house-rule text absent from
+public files, all matricule fiscal values matching the 7-digit+letter pattern,
+and no generic placeholder text.

@@ -1,0 +1,27 @@
+{
+  "experiment": "deliberately_weak_skillopt_showcase",
+  "status": "complete",
+  "label": "Deliberately weak Extractor prompt",
+  "model": "Kimi-K2.5",
+  "optimizer": "SkillOpt 0.2.0",
+  "metric": "soft normalized exact match (NEM), mean per document",
+  "selection": {
+    "weak_baseline": 0.01,
+    "optimized": 0.21,
+    "weak_baseline_hard_exact": 0.0,
+    "optimized_hard_exact": 0.0,
+    "total": 20,
+    "accepted_edits": 2,
+    "skipped_steps": 1,
+    "best_step": 2
+  },
+  "test": {
+    "weak_baseline_soft_nem": 0.02,
+    "optimized_soft_nem": 0.17,
+    "weak_baseline_exact": 0,
+    "optimized_exact": 0,
+    "total": 10
+  },
+  "note": "On the untouched 10-document TEST split, soft NEM improved from 0.02 to 0.17, while strict hard exact match remained 0/10 for both prompts. This synthetic demo shows a measured partial-field improvement, not reliable extraction accuracy or production performance.",
+  "artifacts": "skillopt_output/company_b_extractor_showcase"
+}

@@ -1,0 +1,58 @@
+# SkillOpt config — DocDesk Coder benchmark (structured format)
+# Optimizes skills/company_a/coder/v001.md using TRAIN rollouts, SELECTION validation
+#
+# Run (smoke test):
+#   source .venv-skillopt/bin/activate
+#   python scripts/skillopt_train.py --config configs/docdesk/default.yaml
+#
+# API credentials are read from env vars set by the wrapper script:
+#   OPTIMIZER_OPENAI_COMPATIBLE_BASE_URL / OPTIMIZER_OPENAI_COMPATIBLE_API_KEY / OPTIMIZER_OPENAI_COMPATIBLE_MODEL
+#   TARGET_OPENAI_COMPATIBLE_BASE_URL    / TARGET_OPENAI_COMPATIBLE_API_KEY    / TARGET_OPENAI_COMPATIBLE_MODEL
+# (set from .env by scripts/skillopt_train.py before calling train.py main())
+#
+# Full run: remove env.limit, set train.num_epochs: 3
+
+model:
+  backend: openai_compatible
+
+  # OPTIMIZER role: Kimi-K2.5 with default reasoning (reflects on failures)
+  optimizer_openai_compatible_temperature: 0.0
+  optimizer_openai_compatible_max_tokens: 4096
+
+  # TARGET role: Kimi-K2.5 instant (runs the rollouts)
+  target_openai_compatible_temperature: 0.0
+  target_openai_compatible_max_tokens: 300
+
+train:
+  num_epochs: 1         # smoke test: 1 epoch; use 3 for real run
+  batch_size: 4
+  accumulation: 1        # gradient accumulation steps
+  seed: 42
+
+gradient:
+  minibatch_size: 4
+  merge_batch_size: 4   # batch size for merge/consolidation step
+  analyst_workers: 2
+  failure_only: false
+
+optimizer:
+  learning_rate: 4       # edit_budget
+
+evaluation:
+  sel_env_num: 1         # number of selection eval envs
+  test_env_num: 1        # number of test eval envs
+  eval_test: false       # don't eval on test set during optimization
+  use_gate: true         # gate skill updates on selection performance
+
+env:
+  name: docdesk
+  out_root: skillopt_output/docdesk
+  skill_init: skills/company_a/coder/v001.md
+  split_dir: skillopt_data
+  seed: 42
+  limit: 10              # smoke test: 10 items; remove or set 0 for full run
+  workers: 2
+  analyst_workers: 2
+  minibatch_size: 4
+  edit_budget: 4
+  max_completion_tokens: 300

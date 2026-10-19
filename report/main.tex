@@ -1,0 +1,140 @@
+% ============================================================
+%  DocDesk — n8n Multi-Agent Accounting Pipeline
+%  IEEE-style report  |  pdflatex main.tex (run twice)
+% ============================================================
+\documentclass[journal,10pt,twoside]{IEEEtran}
+
+% --- Encoding & Language -----------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% --- Math --------------------------------------------------
+\usepackage{amsmath,amssymb}
+
+% --- Graphics & TikZ ---------------------------------------
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{
+  shapes.geometric, arrows.meta, positioning, fit,
+  decorations.pathreplacing, calc, backgrounds, matrix,
+  patterns, shadows, chains
+}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% --- Tables ------------------------------------------------
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+
+% --- Layout & Misc -----------------------------------------
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{cite}
+\usepackage{url}
+\usepackage{microtype}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{listings}
+
+% --- Color Palette -----------------------------------------
+\definecolor{C1}{RGB}{31,119,180}    % blue
+\definecolor{C2}{RGB}{255,127,14}    % orange
+\definecolor{C3}{RGB}{44,160,44}     % green
+\definecolor{C4}{RGB}{214,39,40}     % red
+\definecolor{C5}{RGB}{148,103,189}   % purple
+\definecolor{C6}{RGB}{127,127,127}   % gray
+\definecolor{darkblue}{RGB}{20,60,120}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{accepted}{RGB}{44,160,44}
+\definecolor{escalated}{RGB}{214,39,40}
+
+% --- Hyperref ----------------------------------------------
+\hypersetup{
+  colorlinks=true, linkcolor=C1, citecolor=C3, urlcolor=C1,
+  pdftitle={DocDesk: Company-Adaptive AI Automation for Tunisian Accounting},
+}
+
+% --- Helpers -----------------------------------------------
+\newcommand{\agent}[1]{\textbf{\textsf{#1}}}
+\newcommand{\tnd}[1]{#1\,TND}
+\newcommand{\score}[1]{\textbf{#1}}
+
+% ============================================================
+\begin{document}
+
+\title{DocDesk: Company-Adaptive AI Automation for\\
+       Tunisian Accounting Documents}
+
+\author{%
+  \IEEEauthorblockN{Mohamed Aziz Ghdhoun}\\
+  \IEEEauthorblockA{\textit{Final Deep Learning Exam Project}\\
+  \textit{Company-adaptive accounting automation with RAG and versioned skills}}
+}
+
+\maketitle
+
+% --- Abstract -----------------------------------------------
+\begin{abstract}
+DocDesk is a prototype for company-adaptive accounting automation. n8n
+orchestrates document processing; specialized agents extract invoice fields,
+retrieve company-specific accounting rules, assign account codes, validate
+results, and escalate exceptions for human review. Company behavior is
+configured through versioned skills rather than model fine-tuning, and results
+are recorded in an SQLite audit ledger. On a synthetic corpus of 300
+French-language documents for two fictional companies, the 30-document-per-
+company selection runs show Coder scores with RAG of 0.30 and 0.21, compared
+with 0.10 and 0.00 without RAG. The previously reported broad Extractor NEM is
+withdrawn because its scorer penalized fields outside the production response
+schema; corrected scoring now requires a new run. Source-level retrieval Recall@5 is saturated because each company has only
+two or three chunks. In a paired 10-document Company B SELECTION comparison,
+a revised supplier-mapped prompt raised code accuracy from 7/10 to 9/10 and
+supported code-plus-citation from 2/10 to 6/10 using gold extracted fields and
+identical RAG; this small prompt-only result is not held-out TEST evidence. The
+integrated SkillOpt 0.2.0 run processed
+12 TRAIN and 12 SELECTION documents: its corrected extraction adapter scored
+1.00 on both sets, so the failure-only optimizer proposed no edits and promoted
+no new skill. This small adapter-level result is not evidence of system-level
+accuracy. A separate deliberately weak-skill demo raised soft NEM from 0.01 to
+0.21 on 20 SELECTION examples. Its untouched 10-document TEST soft NEM rose
+from 0.02 to 0.17, while hard exact match remained 0/10 for both prompts. The
+system is a research
+prototype, not a production accounting product.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Multi-agent pipeline, LLM, RAG, accounting automation, SkillOpt, n8n,
+synthetic accounting documents, prompt optimization.
+\end{IEEEkeywords}
+
+% --- Sections -----------------------------------------------
+\input{sections/01_introduction}
+\input{sections/02_background}
+\input{sections/03_architecture}
+\input{sections/04_data}
+\input{sections/05_agents}
+\input{sections/06_rag}
+\input{sections/07_evaluation}
+\input{sections/08_skillopt}
+\input{sections/09_roadmap}
+\input{sections/10_security}
+\input{sections/11_conclusion}
+
+% --- References ---------------------------------------------
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+% --- Prompt library annex (excluded from the eight-page report limit) ---
+\appendices
+\section{Prompt Library}
+The project prompt versions, techniques, and evaluation evidence are included
+below. Complete operational prompts are versioned in the linked repository
+files listed in the library.
+\lstinputlisting[breaklines=true,basicstyle=\ttfamily\scriptsize]{../prompts/PROMPT_LIBRARY.md}
+
+\end{document}

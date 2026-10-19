@@ -1,0 +1,443 @@
+{
+  "embedding_model": "paraphrase-multilingual-mpnet-base-v2",
+  "top_k": 5,
+  "metrics": "source-level Recall@5 and MRR@5; same queries, corpus, and model",
+  "chunkers": {
+    "fixed": {
+      "company_a": {
+        "n_queries": 20,
+        "n_chunks": 9,
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.9167,
+        "per_query": [
+          {
+            "query": "Comment codifier une facture STEG électricité ?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Quel code utiliser pour une facture d'eau SONEDE ?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Code comptable pour Tunisie Telecom téléphone internet",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Facture carburant station Total ou Shell",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Prestation informatique SysTech Solutions quel compte ?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Fournitures de bureau Monoprix code de compte",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Timbre fiscal code comptable Tunisia",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.3333333333333333
+          },
+          {
+            "query": "TVA 19% factures fournisseurs Company A",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "What account code for STEG electricity bill?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "How to code a telecom invoice Ooredoo?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "IT services InfoPro accounting code",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Carrefour Tunisie office supplies account",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Charges exploitation classe 6 SCE tunisien",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "Plan comptable achats marchandises",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Compte 606100 libellé description",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Prestations extérieures services bancaires compte",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "DataSys SARL maintenance informatique",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "facture Orange Tunisie internet mobile",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "SCE class 6 accounts Tunisia chart",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "code for purchase order fuel station",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          }
+        ]
+      },
+      "company_b": {
+        "n_queries": 20,
+        "n_chunks": 11,
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.8875,
+        "per_query": [
+          {
+            "query": "Facture STEG électricité Company B quel code ?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Facture SONEDE eau taux TVA 7%",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "Téléphone internet Ooredoo code 6261-TE001",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Carburant Station Total 13% TVA",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "EuroTech imported merchandise account code 6010-AC001",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Assurances AssurPlus Courtage code 6161",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Timbre fiscal exonéré TVA code 6370",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Services bancaires frais commissions TVA 13%",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "What code for STEG invoice Company B?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "EuroTech imported goods account code",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "insurance premium accounting code Tunisia",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "fuel purchase 13% VAT account code",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Plan comptable Company B format 6010-CC001",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "Amortissements matériel informatique code",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "Honoraires consultants compte 6226",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Orange Tunisie telecom internet facture",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Monoprix Carrefour fournitures bureau TVA 19%",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Conseil Audit Beta honoraires codification",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Computer maintenance account code 6170-IT001",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "accounts structure NNNN-CCNNN format Belgium B",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.25
+          }
+        ]
+      }
+    },
+    "semantic": {
+      "company_a": {
+        "n_queries": 20,
+        "n_chunks": 9,
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.9167,
+        "per_query": [
+          {
+            "query": "Comment codifier une facture STEG électricité ?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Quel code utiliser pour une facture d'eau SONEDE ?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Code comptable pour Tunisie Telecom téléphone internet",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Facture carburant station Total ou Shell",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Prestation informatique SysTech Solutions quel compte ?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Fournitures de bureau Monoprix code de compte",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Timbre fiscal code comptable Tunisia",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.3333333333333333
+          },
+          {
+            "query": "TVA 19% factures fournisseurs Company A",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "What account code for STEG electricity bill?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "How to code a telecom invoice Ooredoo?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "IT services InfoPro accounting code",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Carrefour Tunisie office supplies account",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Charges exploitation classe 6 SCE tunisien",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "Plan comptable achats marchandises",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Compte 606100 libellé description",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Prestations extérieures services bancaires compte",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "DataSys SARL maintenance informatique",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "facture Orange Tunisie internet mobile",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "SCE class 6 accounts Tunisia chart",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "code for purchase order fuel station",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          }
+        ]
+      },
+      "company_b": {
+        "n_queries": 20,
+        "n_chunks": 10,
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.85,
+        "per_query": [
+          {
+            "query": "Facture STEG électricité Company B quel code ?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Facture SONEDE eau taux TVA 7%",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "Téléphone internet Ooredoo code 6261-TE001",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Carburant Station Total 13% TVA",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "EuroTech imported merchandise account code 6010-AC001",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Assurances AssurPlus Courtage code 6161",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Timbre fiscal exonéré TVA code 6370",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Services bancaires frais commissions TVA 13%",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "What code for STEG invoice Company B?",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "EuroTech imported goods account code",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "insurance premium accounting code Tunisia",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "fuel purchase 13% VAT account code",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Plan comptable Company B format 6010-CC001",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "Amortissements matériel informatique code",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.5
+          },
+          {
+            "query": "Honoraires consultants compte 6226",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.25
+          },
+          {
+            "query": "Orange Tunisie telecom internet facture",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Monoprix Carrefour fournitures bureau TVA 19%",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Conseil Audit Beta honoraires codification",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "Computer maintenance account code 6170-IT001",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0
+          },
+          {
+            "query": "accounts structure NNNN-CCNNN format Belgium B",
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.25
+          }
+        ]
+      }
+    }
+  }
+}

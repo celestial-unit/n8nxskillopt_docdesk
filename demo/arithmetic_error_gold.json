@@ -1,0 +1,29 @@
+{
+  "doc_id": "DEMO-A-ERROR",
+  "doc_type": "purchase_order",
+  "fields": {
+    "supplier": "STEG",
+    "date": "24/04/2024",
+    "number": "BC-6635",
+    "reference_unique": "REF-BC-064838",
+    "htva": "14 131,489",
+    "tva": "2 684,983",
+    "ttc": "16 817,285",
+    "timbre_fiscal": "0,600",
+    "matricule_fiscal": "4087560E",
+    "currency": "TND",
+    "line_descriptions": [
+      "Abonnement gaz naturel",
+      "Relevé mensuel électricité",
+      "Consommation eau potable"
+    ]
+  },
+  "account_code": "606100",
+  "injected_errors": [
+    "arithmetic_mismatch"
+  ],
+  "company_id": "company_a",
+  "applied_house_rules": [
+    "HR-A1"
+  ]
+}

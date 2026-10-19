@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Desk — Slide 09: Data Science Objectives</title>
+  <link rel="stylesheet" href="../styles/global.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body class="page-wrapper">
+
+  <header class="slide-header">
+    <nav>
+      <a href="../index.html" class="nav-menu-link">Menu</a>
+      <span class="slide-counter">Slide 9 of 12</span>
+    </nav>
+    <div class="progress-bar-track"><div class="progress-bar-fill" style="width:75%"></div></div>
+  </header>
+
+  <main class="slide-content">
+
+    <div class="fade-up">
+      <span class="pill pill-training">Data Science</span>
+      <h2 class="mt-sm">Four measurable objectives.</h2>
+      <p class="mt-xs">Each maps to a specific metric and a comparison arm. No invented numbers — all measured on held-out data.</p>
+    </div>
+
+    <!-- Objectives flow -->
+    <div class="diagram-wrap mt-lg fade-up-1" style="padding:1.25rem;">
+      <div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {
+  "background": "#2d2b24",
+  "primaryColor": "#D97757",
+  "primaryTextColor": "#f2ede4",
+  "primaryBorderColor": "#D97757",
+  "lineColor": "#D97757",
+  "secondaryColor": "#2dd4a0",
+  "fontFamily": "Inter, system-ui",
+  "fontSize": "12px"
+}}}%%
+flowchart LR
+  OBJ1["OBJ 1\nSkill > No-Skill\nF1(optimized) > F1(no_skill)"]
+  OBJ2["OBJ 2\nGeneralization\nF1(train) ≈ F1(eval)"]
+  OBJ3["OBJ 3\nCross-Company\nepochs(warm) < epochs(cold)"]
+  OBJ4["OBJ 4\nSafe Change Control\nzero regressions"]
+
+  OBJ1 -->|"builds on"| OBJ2
+  OBJ2 -->|"enables"| OBJ3
+  OBJ3 -->|"validated by"| OBJ4
+
+  style OBJ1 fill:rgba(217,119,87,0.15),stroke:#D97757,color:#f2ede4
+  style OBJ2 fill:rgba(96,165,250,0.15),stroke:#60a5fa,color:#f2ede4
+  style OBJ3 fill:rgba(45,212,160,0.15),stroke:#2dd4a0,color:#f2ede4
+  style OBJ4 fill:rgba(224,160,62,0.15),stroke:#E0A03E,color:#f2ede4
+      </div>
+    </div>
+
+    <div class="grid-2 mt-lg">
+
+      <div class="card fade-up-2" style="border-left:3px solid var(--accent);">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+          <span class="pill pill-accent" style="font-size:0.65rem;">OBJ 1</span>
+          <h3 style="font-size:1rem;">Skill beats no-skill baseline</h3>
+        </div>
+        <p style="font-size:0.85rem;">An optimized SKILL.md produces higher field-extraction F1 than an agent with zero instructions on the same held-out invoice set.</p>
+        <div class="mt-sm" style="background:var(--bg-raised);border-radius:8px;padding:0.75rem;">
+          <div style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:0.4rem;">Measurement</div>
+          <code style="font-size:0.8rem;">F1(optimized_skill) &gt; F1(no_skill)</code><br>
+          <code style="font-size:0.8rem;">on held-out extraction split</code>
+        </div>
+      </div>
+
+      <div class="card fade-up-2" style="border-left:3px solid var(--serving);">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+          <span class="pill pill-serving" style="font-size:0.65rem;">OBJ 2</span>
+          <h3 style="font-size:1rem;">Generalization to unseen documents</h3>
+        </div>
+        <p style="font-size:0.85rem;">A skill trained on historical invoices maintains F1 on new, unseen invoices. Captures structural rules — not memorized examples.</p>
+        <div class="mt-sm" style="background:var(--bg-raised);border-radius:8px;padding:0.75rem;">
+          <div style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:0.4rem;">Measurement</div>
+          <code style="font-size:0.8rem;">F1(train_split) ≈ F1(eval_split)</code><br>
+          <code style="font-size:0.8rem;">no significant degradation</code>
+        </div>
+      </div>
+
+      <div class="card fade-up-3" style="border-left:3px solid var(--training);">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+          <span class="pill pill-training" style="font-size:0.65rem;">OBJ 3</span>
+          <h3 style="font-size:1rem;">Cross-company transfer (E2)</h3>
+        </div>
+        <p style="font-size:0.85rem;">Warm-start with Company A's skill → fewer correction epochs to reach target on Company B vs cold start from generic skill.</p>
+        <div class="mt-sm" style="background:var(--bg-raised);border-radius:8px;padding:0.75rem;">
+          <div style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:0.4rem;">Measurement</div>
+          <code style="font-size:0.8rem;">epochs_to_target(warm) &lt; epochs_to_target(cold)</code>
+        </div>
+      </div>
+
+      <div class="card fade-up-3" style="border-left:3px solid var(--human);">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;">
+          <span class="pill pill-human" style="font-size:0.65rem;">OBJ 4</span>
+          <h3 style="font-size:1rem;">Safe change control</h3>
+        </div>
+        <p style="font-size:0.85rem;">The accept gate must never allow a skill update that reduces eval performance. Zero regressions across all accepted updates.</p>
+        <div class="mt-sm" style="background:var(--bg-raised);border-radius:8px;padding:0.75rem;">
+          <div style="font-size:0.75rem;color:var(--text-tertiary);margin-bottom:0.4rem;">Measurement</div>
+          <code style="font-size:0.8rem;">∀ accepted: candidate_mean &gt; baseline_mean</code><br>
+          <code style="font-size:0.8rem;">zero regressions in accepted epochs</code>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="slide-footer">
+    <div class="nav-btns">
+      <a href="08-bizobj.html" class="nav-btn nav-btn-prev">← Prev</a>
+      <a href="10-experiments.html" class="nav-btn primary nav-btn-next">Next →</a>
+    </div>
+  </footer>
+
+  <script src="../js/nav.js"></script>
+  <script>mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{background:'#2d2b24',primaryColor:'#D97757',primaryTextColor:'#f2ede4',lineColor:'#D97757',fontFamily:'Inter, system-ui',fontSize:'12px'}});</script>
+</body>
+</html>

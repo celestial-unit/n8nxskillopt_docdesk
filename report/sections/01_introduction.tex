@@ -1,0 +1,54 @@
+% ============================================================
+%  Section 1 — Introduction
+% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+An accountant processing a stack of Tunisian invoices faces the same four steps
+on every document: read the supplier name, extract the amounts, find the right
+account code from the company's chart, and check whether the numbers add up.
+Repeated hundreds of times a week, this costs 3–5 minutes per document and
+introduces a steady stream of classification errors.
+
+Large Language Models (LLMs) can now perform all four steps in seconds. The challenge
+is not capability — it is \textit{control}. A production system must:
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item assign codes from the \emph{company's own} chart, not a generic one;
+  \item provide an auditable record showing which rule was used and why;
+  \item flag documents with arithmetic errors or missing tax identifiers before
+        they enter the ledger;
+  \item update its behaviour when accounting rules change, without retraining.
+\end{itemize}
+
+DocDesk addresses all four requirements. It orchestrates five specialized agents
+through n8n~\cite{n8n2024}, grounds account code assignment in a company-specific
+rules store via Retrieval-Augmented Generation (RAG)~\cite{lewis2020rag}, and
+enforces arithmetic and identifier checks in deterministic Python code.
+Company-specific behaviour is stored in versioned skills. SkillOpt~\cite{skillopt2024}
+is integrated as a text-space optimizer. Its failure-only update policy keeps
+candidate edits bounded and accepts them only when the held-out selection score
+improves. We also evaluate a separate, manually authored TRAIN-derived skill
+revision, clearly distinguished from the SkillOpt run.
+
+\textbf{Why not a single LLM call?}
+Routing, extraction, coding, and validation are different tasks with different
+failure modes. Separating them allows stage-level outputs, checks, and traces,
+but adds orchestration complexity and can increase latency. In this workflow,
+routing is deterministic and validation calls an LLM only when a check fails;
+the pipeline does not make five model calls for every document.
+
+\textbf{Contributions.}
+\begin{enumerate}[leftmargin=*, itemsep=2pt]
+  \item An n8n-based prototype connecting multimodal document intake,
+        company-filtered rule retrieval, validation, review, and audit logging
+        (\cref{sec:architecture}).
+  \item A 300-document synthetic corpus with injected errors and hidden house
+        rules designed to stress-test every agent (\cref{sec:data}).
+  \item Quantitative Coder and Validator baselines, with a small observed
+        with/without-RAG comparison; the broad Extractor metric is withheld
+        pending a corrected rerun (\cref{sec:evaluation}).
+  \item A measured baseline, prompt iteration, and a real SkillOpt run with a
+        selection-gated no-change outcome on a balanced pilot split
+        (\cref{sec:evaluation,sec:skillopt}).
+\end{enumerate}

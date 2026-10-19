@@ -1,0 +1,22 @@
+% ============================================================
+%  Security and deployment boundaries
+% ============================================================
+\section{Security Considerations}
+\label{sec:security}
+
+The prototype uses synthetic documents and fictional company policies; no
+customer records are included in the evaluation. Provider credentials are read
+from environment configuration rather than embedded in prompts or source
+control. Retrieval requests include a company filter, and stored decisions
+retain a trace of the skill version and evidence used. Validation exceptions
+are routed for human review instead of silently treated as approved entries.
+
+These controls are prototype safeguards, not a production security assessment.
+Before connecting real mailboxes or Drive folders, an operator must configure
+Google OAuth with the minimum required scopes, restrict access to the n8n and
+dashboard interfaces, and define retention, backup, deletion, and audit
+procedures. Prompts and retrieved document text are untrusted input; the
+current prototype does not provide a dedicated prompt-injection defense.
+Accounting rules also require review by a qualified professional. Gmail and
+Drive triggers remain disabled until credentials and a monitored folder are
+configured.

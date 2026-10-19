@@ -1,0 +1,52 @@
+# SkillOpt config — DocDesk Extractor optimization
+# Optimizes skills/company_a/extractor/v001.md
+# Uses TRAIN for rollouts, SELECTION for gate evaluation
+#
+# Run (smoke test — 10 items, 1 epoch):
+#   source .venv-skillopt/bin/activate
+#   python scripts/skillopt_extractor.py --config configs/docdesk/extractor.yaml
+#
+# Full run: remove env.limit, set train.num_epochs: 3
+
+model:
+  backend: openai_compatible
+  # Optimizer: default reasoning (SkillOpt rule: optimizer uses default)
+  optimizer_openai_compatible_temperature: 0.0
+  optimizer_openai_compatible_max_tokens: 4096
+  # Target: extracts fields from documents
+  target_openai_compatible_temperature: 0.0
+  target_openai_compatible_max_tokens: 600
+
+train:
+  num_epochs: 1
+  batch_size: 4
+  accumulation: 1
+  seed: 42
+
+gradient:
+  minibatch_size: 4
+  merge_batch_size: 4
+  analyst_workers: 2
+  failure_only: false
+
+optimizer:
+  learning_rate: 4
+
+evaluation:
+  sel_env_num: 1
+  test_env_num: 1
+  eval_test: false
+  use_gate: true
+
+env:
+  name: docdesk_extractor
+  out_root: skillopt_output/docdesk_extractor
+  skill_init: skills/company_a/extractor/v001.md
+  split_dir: skillopt_data
+  seed: 42
+  limit: 10
+  workers: 2
+  analyst_workers: 2
+  minibatch_size: 4
+  edit_budget: 4
+  max_completion_tokens: 600

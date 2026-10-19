@@ -1,0 +1,111 @@
+% ============================================================
+%  Section 8 — Skill optimization and measured prompt iteration
+% ============================================================
+\section{Company-Specific Skill Adaptation}
+\label{sec:skillopt}
+
+\subsection{SkillOpt Integration and Evaluation}
+
+DocDesk represents company behaviour as versioned Markdown skills. The actual
+SkillOpt 0.2.0 library runs against the Extractor environment through the
+product API. It receives labeled TRAIN examples, groups failure feedback into
+bounded skill patches, then evaluates candidate changes on a disjoint SELECTION
+split. A candidate is promoted only when the configured continuous score
+improves. Model weights are unchanged; TEST remains reserved for a final
+comparison.
+
+The Company B run used 12 TRAIN, 20 SELECTION, and 10 TEST documents, covering
+invoices, purchase orders, and receipts. The dataset snapshots and SHA-256
+hashes are saved with the run. Kimi-K2.5 served both the target and optimizer
+roles. The initial skill scored 1.00 hard exact match on SELECTION. Across
+three four-example TRAIN steps, SkillOpt skipped all edits because selection
+performance did not improve; the initial skill remained the best version. The
+run took 1,041.5 seconds and recorded 97,805 tokens across 37 calls. These
+values are specific to this small generated pilot, not a general-purpose
+accuracy estimate.
+
+The first baseline TEST pass returned exact scores for 4 of 10 documents; six
+were lost to temporary provider connection errors. Retrying those six produced
+valid exact predictions for all six. A fresh run of the selected skill also
+completed all 10 documents with exact predictions. Thus both the recovered
+baseline and selected skill scored 10/10 exact on this held-out set, while the
+selected skill is byte-identical to the initial skill. This is evidence of no
+measured change, not an optimization gain. Retry-aware counts and per-document
+records are in \url{eval/results/company_b_extractor_skillopt.json}; raw
+outputs and dataset fingerprints are preserved under
+\url{skillopt_output/company_b_extractor/runs/20261019T155925Z}.
+
+The previously reported broad Extractor NEM is not comparable: its scorer
+counted \texttt{reference\_unique}, which the production response schema does
+not return, and failed to map gold \texttt{line\_descriptions} to nested
+production \texttt{lines[].description}. Both mismatches guaranteed field
+errors. The scorer is corrected in the repository, but the broad baseline has
+not been rerun; its old Extractor NEM values are withdrawn. The SkillOpt pilot's
+1.00 selection score uses the corrected field mapping on only 20 SELECTION items,
+so it remains an adapter-level result rather than a broad production accuracy
+claim. The optimizer made no skill change and provides no evidence of an
+accuracy gain.
+
+To make the adaptation mechanism visible, a separate demo-only run started from
+an intentionally poor prompt that always returned \texttt{UNKNOWN}. On 20
+SELECTION documents, its soft normalized exact-match score rose from 0.01 to
+0.21 after SkillOpt accepted bounded edits. Hard exact match remained 0.00 for
+both prompts. On the untouched 10-document TEST split, soft NEM rose from 0.02
+to 0.17, but hard exact match remained 0/10 for both. This shows improved
+partial-field overlap, not successful complete extraction. The weak prompt is
+isolated from the production skill and is included only to demonstrate the
+optimizer. Artifacts are stored under
+\url{skillopt_output/company_b_extractor_showcase}.
+
+\subsection{Separate Manual Prompt Iteration}
+
+We used the existing Company B TRAIN labels to investigate a measured
+Coder error. Seven training documents showed that TechVision consulting,
+audit, and research work maps to \texttt{6226-HO001}, while technical IT work
+maps to \texttt{6170-IT001}. The v003 prompt added this exception. The broader
+v004 revision added an explicit supplier-to-account map, made supplier identity
+the primary signal for this benchmark, preserved line-description
+disambiguation for TechVision's mixed services, and required short verbatim
+citations.
+
+\begin{table}[ht]
+\caption{Company B Coder prompt comparison on the SELECTION split}
+\label{tab:skill_iteration}
+\centering\scriptsize\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Metric} & \textbf{Baseline v001} & \textbf{Improved v004} & \textbf{Change} \\
+\midrule
+Cases (paired SELECTION) & 10 & 10 & -- \\
+JSON parse rate & 10/10 & 10/10 & 0 \\
+Correct account code & 7/10 & 9/10 & +2 \\
+Supported code and citation & 2/10 & 6/10 & +4 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Both prompts received the same gold extracted fields and identical
+company-filtered top-5 RAG results, isolating the coding skill from OCR and
+extraction quality. On the paired sample, v004 improved code accuracy by 20
+percentage points and the stricter supported score by 40 points; it won four
+cases, lost none, and tied six. All 10 responses parsed. This remains a small
+selection-only prompt experiment, not a full-corpus or held-out TEST estimate.
+The earlier four-case TechVision comparison remains a development check. Full
+per-document outputs are in
+\url{eval/results/company_b_coder_improvement.json}; prompt text and notes are
+in \texttt{prompts/PROMPT\_LIBRARY.md}.
+
+A separate 30-document v001/v002 run was throttled by provider rate limits. Only
+12 documents had valid responses from both prompts; their supported Coder
+scores were 9/12 and 8/12, respectively. This incomplete run is not evidence
+that v002 improved performance. It motivated bounded requests, checkpointing,
+and explicit separation of provider errors from model errors in the evaluator.
+
+\subsection{Interpretation}
+
+The v004 result is a manual, train-informed prompt revision; it is separate
+from SkillOpt and must not be described as optimizer-generated. It is early
+paired evidence from 10 SELECTION examples. The production skill loader selects
+v004; TEST evaluation remains necessary before claiming generalization. The
+older targeted comparison is available in
+\texttt{eval/results/company\_b\_skill\_adaptation.json}.

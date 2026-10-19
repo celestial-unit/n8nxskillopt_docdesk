@@ -1,0 +1,22 @@
+[
+  {"query": "Comment codifier une facture STEG électricité ?", "expected_sources": ["public_utilities.md"]},
+  {"query": "Quel code utiliser pour une facture d'eau SONEDE ?", "expected_sources": ["public_utilities.md"]},
+  {"query": "Code comptable pour Tunisie Telecom téléphone internet", "expected_sources": ["telecommunications.md"]},
+  {"query": "Facture carburant station Total ou Shell", "expected_sources": ["fuel.md"]},
+  {"query": "Prestation informatique SysTech Solutions quel compte ?", "expected_sources": ["it_services.md"]},
+  {"query": "Fournitures de bureau Monoprix code de compte", "expected_sources": ["office_supplies.md"]},
+  {"query": "Timbre fiscal code comptable Tunisia", "expected_sources": ["tax_and_stamp.md"]},
+  {"query": "TVA 19% factures fournisseurs Company A", "expected_sources": ["tax_and_stamp.md"]},
+  {"query": "What account code for STEG electricity bill?", "expected_sources": ["public_utilities.md"]},
+  {"query": "How to code a telecom invoice Ooredoo?", "expected_sources": ["telecommunications.md"]},
+  {"query": "IT services InfoPro accounting code", "expected_sources": ["it_services.md"]},
+  {"query": "Carrefour Tunisie office supplies account", "expected_sources": ["office_supplies.md"]},
+  {"query": "Charges exploitation classe 6 SCE tunisien", "expected_sources": ["chart_of_accounts.md"]},
+  {"query": "Plan comptable achats marchandises", "expected_sources": ["purchases.md"]},
+  {"query": "Compte 606100 libellé description", "expected_sources": ["chart_of_accounts.md"]},
+  {"query": "Prestations extérieures services bancaires compte", "expected_sources": ["banking.md"]},
+  {"query": "DataSys SARL maintenance informatique", "expected_sources": ["it_services.md"]},
+  {"query": "facture Orange Tunisie internet mobile", "expected_sources": ["telecommunications.md"]},
+  {"query": "SCE class 6 accounts Tunisia chart", "expected_sources": ["chart_of_accounts.md"]},
+  {"query": "code for purchase order fuel station", "expected_sources": ["fuel.md"]}
+]

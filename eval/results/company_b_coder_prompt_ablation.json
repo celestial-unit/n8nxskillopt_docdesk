@@ -1,0 +1,512 @@
+{
+  "experiment": "company_b_coder_prompt_ablation",
+  "status": "partial_provider_errors",
+  "split": "SELECTION",
+  "input_policy": "gold extracted fields; isolates coder prompt and RAG",
+  "rag": "same company-filtered top-5 retrieval for both prompts",
+  "n_calls": 60,
+  "prompt_sha256": {
+    "v001_baseline": "7bd4bbed12a19bba6627ed4ea05c3d7a47baef22c1b5ee13bdcf340cda6350d9",
+    "v002_candidate": "277da7d65daf19f9ba8e7ba1082445040a314dddf71721234d925ba9717a5dcd"
+  },
+  "summary": {
+    "v001_baseline": {
+      "attempts": 30,
+      "model_responses": 12,
+      "supported_coder_score_on_responses": 0.75,
+      "parse_rate_on_responses": 1.0
+    },
+    "v002_candidate": {
+      "attempts": 30,
+      "model_responses": 13,
+      "supported_coder_score_on_responses": 0.6923,
+      "parse_rate_on_responses": 1.0
+    },
+    "paired_valid_responses": {
+      "n": 12,
+      "document_ids": [
+        "B-DOC-0002",
+        "B-DOC-0007",
+        "B-DOC-0010",
+        "B-DOC-0056",
+        "B-DOC-0073",
+        "B-DOC-0089",
+        "B-DOC-0094",
+        "B-DOC-0108",
+        "B-DOC-0113",
+        "B-DOC-0116",
+        "B-DOC-0129",
+        "B-DOC-0149"
+      ],
+      "v001_score": 0.75,
+      "v002_score": 0.6667,
+      "delta": -0.0833,
+      "wins": 1,
+      "losses": 2,
+      "ties": 9,
+      "mcnemar_exact_p": 1.0
+    }
+  },
+  "items": {
+    "v001_baseline": [
+      {
+        "id": "B-DOC-0089",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-EN001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0010",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6261-TE001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0002",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-EA001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0073",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-FO001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0056",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-FO001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0113",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6170-IT001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0129",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6170-IT001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0116",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-CA001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0094",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-EA001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0108",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6261-TE001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0007",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-EA001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0149",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6226-HO001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0057",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0142",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0125",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0088",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0064",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0039",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0040",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0016",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0066",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0038",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0118",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0037",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0036",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0028",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0123",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0103",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0075",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0021",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      }
+    ],
+    "v002_candidate": [
+      {
+        "id": "B-DOC-0089",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6060-EA001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0010",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6261-TE001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0002",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-EA001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0073",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-FO001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0056",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-FO001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0113",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6170-IT001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0129",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6170-IT001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0116",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-CA001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0094",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-EA001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0108",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6261-TE001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0007",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-EA001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0149",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6226-HO001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0057",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0142",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0125",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0088",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0064",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0039",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6060-FO001",
+        "response_received": true
+      },
+      {
+        "id": "B-DOC-0040",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0016",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0066",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0038",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0118",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0037",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0036",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0028",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0123",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0103",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0075",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      },
+      {
+        "id": "B-DOC-0021",
+        "parse_ok": false,
+        "score": 0,
+        "error_type": "RateLimitError",
+        "error": "Error code: 429 - {'error': {'code': 'RateLimitReached', 'message': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exceeded token rate limit.', 'details': 'Your requests to Kimi-K2.5 for Kimi-K2.5 in swedencentral have exce",
+        "response_received": false
+      }
+    ]
+  },
+  "completed_model_responses": 25
+}

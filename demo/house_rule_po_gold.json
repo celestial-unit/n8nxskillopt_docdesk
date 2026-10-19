@@ -1,0 +1,27 @@
+{
+  "doc_id": "DEMO-A-HOUSE",
+  "doc_type": "purchase_order",
+  "fields": {
+    "supplier": "Monoprix Tunisie",
+    "date": "14/03/2024",
+    "number": "BC-6717",
+    "reference_unique": "REF-BC-200653",
+    "htva": "4 654,966",
+    "tva": "884,444",
+    "ttc": "5 539,410",
+    "timbre_fiscal": "0,600",
+    "matricule_fiscal": "6882415F",
+    "currency": "TND",
+    "line_descriptions": [
+      "Produits d'entretien",
+      "Articles de papeterie",
+      "Consommables informatiques"
+    ]
+  },
+  "account_code": "615000",
+  "injected_errors": [],
+  "company_id": "company_a",
+  "applied_house_rules": [
+    "HR-A3"
+  ]
+}

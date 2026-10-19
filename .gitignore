@@ -1,0 +1,77 @@
+# ── Secrets ───────────────────────────────────────────────────────────────────
+.env
+*.env
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+.venv-skillopt/
+venv/
+env/
+
+# ── Generated data (do not push) ──────────────────────────────────────────────
+data/company_a/documents/
+data/company_b/documents/
+skillopt_data/
+
+# ── SkillOpt outputs (run artifacts, not source) ──────────────────────────────
+skillopt_output/
+
+# ── Databases & vector store ──────────────────────────────────────────────────
+qdrant_local/
+*.sqlite
+*.db
+traces.db
+
+# ── Local LLM response cache ─────────────────────────────────────────────────
+.cache/
+
+# ── Report PDFs and LaTeX build artifacts ────────────────────────────────────
+*.pdf
+presentation/renders/
+report/*.pdf
+report/*.aux
+report/*.bbl
+report/*.blg
+report/*.log
+report/*.out
+report/*.toc
+report/*.synctex.gz
+report/*.fls
+report/*.fdb_latexmk
+skillopt.pdf
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.hypothesis/
+htmlcov/
+.coverage
+
+# ── Node / Next.js ────────────────────────────────────────────────────────────
+node_modules/
+ui/node_modules/
+ui/.next/
+ui/out/
+.pnpm-store/
+
+# ── Kiro IDE ──────────────────────────────────────────────────────────────────
+.kiro/
+
+# ── macOS / editors ──────────────────────────────────────────────────────────
+.DS_Store
+.vscode/settings.json
+*.swp
+*.swo
+
+# ── Inbox (runtime transit) ───────────────────────────────────────────────────
+inbox/
+
+.lo-profile/
+.~lock.*

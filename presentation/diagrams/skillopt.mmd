@@ -1,0 +1,5 @@
+flowchart LR
+  A["TRAIN rollouts"] --> B["Reflect on failures"] --> C["Propose bounded edits"] --> D["SELECTION gate"]
+  D -->|"better"| E["Keep candidate"]
+  D -->|"not better"| F["Keep current skill"]
+  E --> G["TEST once · held out"]

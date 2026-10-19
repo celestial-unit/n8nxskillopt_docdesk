@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Desk — Slide 07: SkillOpt Loop</title>
+  <link rel="stylesheet" href="../styles/global.css">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    .stage-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 50%;
+      font-size: 0.78rem; font-weight: 800; flex-shrink: 0;
+    }
+    .loop-arrow { text-align: center; color: var(--text-tertiary); font-size: 1rem; margin: 0.1rem 0; }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <header class="slide-header">
+    <nav>
+      <a href="../index.html" class="nav-menu-link">Menu</a>
+      <span class="slide-counter">Slide 7 of 12</span>
+    </nav>
+    <div class="progress-bar-track"><div class="progress-bar-fill" style="width:58.3%"></div></div>
+  </header>
+
+  <main class="slide-content">
+
+    <div class="fade-up">
+      <span class="pill pill-training">Training Plane</span>
+      <h2 class="mt-sm">SkillOpt Loop</h2>
+      <p class="mt-xs">A DSPy-style optimization loop that rewrites SKILL.md — one edit budget per epoch, strict accept-only-if-better gate.</p>
+    </div>
+
+    <!-- Mermaid cycle diagram -->
+    <div class="diagram-wrap mt-lg fade-up-1" style="padding:1.25rem 1rem;">
+      <div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {
+  "background": "#2d2b24",
+  "primaryColor": "#D97757",
+  "primaryTextColor": "#f2ede4",
+  "primaryBorderColor": "#D97757",
+  "lineColor": "#D97757",
+  "secondaryColor": "#2dd4a0",
+  "tertiaryColor": "#E0A03E",
+  "edgeLabelBackground": "#373530",
+  "fontFamily": "Inter, system-ui",
+  "fontSize": "12px"
+}}}%%
+flowchart LR
+  R1["1 · Rollout\nRun skill on training split"]
+  R2["2 · Reflect\nLLM critiques failures"]
+  R3["3 · Aggregate\nMerge patch proposals"]
+  R4["4 · Select\nRank & clip to budget"]
+  R5["5 · Update\nApply edits in memory"]
+  R6{"6 · Evaluate\nStrictly better?"}
+  ACC["✓ Accept\n→ write to registry"]
+  REJ["✗ Reject\n→ unchanged"]
+
+  R1 --> R2 --> R3 --> R4 --> R5 --> R6
+  R6 -->|"yes"| ACC
+  R6 -->|"no"| REJ
+  ACC -->|"next epoch"| R1
+  REJ -->|"retry"| R1
+
+  style R1 fill:rgba(217,119,87,0.15),stroke:#D97757,color:#f2ede4
+  style R2 fill:rgba(167,139,250,0.15),stroke:#a78bfa,color:#f2ede4
+  style R3 fill:rgba(224,160,62,0.15),stroke:#E0A03E,color:#f2ede4
+  style R4 fill:rgba(251,146,60,0.15),stroke:#fb923c,color:#f2ede4
+  style R5 fill:rgba(45,212,160,0.15),stroke:#2dd4a0,color:#f2ede4
+  style R6 fill:rgba(232,121,249,0.15),stroke:#e879f9,color:#f2ede4
+  style ACC fill:rgba(45,212,160,0.2),stroke:#2dd4a0,color:#2dd4a0
+  style REJ fill:rgba(224,92,106,0.2),stroke:#e05c6a,color:#e05c6a
+      </div>
+    </div>
+
+    <!-- Detail cards -->
+    <div class="grid-2 mt-lg">
+
+      <div class="fade-up-2" style="display:flex;flex-direction:column;gap:0.35rem;">
+        <div class="loop-stage">
+          <div class="stage-badge" style="background:rgba(217,119,87,0.15);color:var(--stage-rollout);">1</div>
+          <div>
+            <div style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">Rollout</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.2rem;">Run the current skill on the training split. Each document produces an extraction result and a field-level F1 score.</div>
+          </div>
+        </div>
+        <div class="loop-arrow">↓</div>
+        <div class="loop-stage">
+          <div class="stage-badge" style="background:rgba(167,139,250,0.15);color:var(--stage-reflect);">2</div>
+          <div>
+            <div style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">Reflect</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.2rem;">LLM analyst reads each failure trace and proposes targeted <code>RawPatch</code> edits — specific rules to prevent the error.</div>
+          </div>
+        </div>
+        <div class="loop-arrow">↓</div>
+        <div class="loop-stage">
+          <div class="stage-badge" style="background:rgba(224,160,62,0.15);color:var(--stage-aggregate);">3</div>
+          <div>
+            <div style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">Aggregate</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.2rem;">Cluster and merge patches from failure and success traces into one coherent <code>Patch</code>. Deduplicates contradictions.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-up-3" style="display:flex;flex-direction:column;gap:0.35rem;">
+        <div class="loop-stage">
+          <div class="stage-badge" style="background:rgba(251,146,60,0.15);color:var(--stage-select);">4</div>
+          <div>
+            <div style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">Select</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.2rem;">Rank edits by expected impact, clip to edit budget (max 3 → 2 → 1 across epochs).</div>
+          </div>
+        </div>
+        <div class="loop-arrow">↓</div>
+        <div class="loop-stage">
+          <div class="stage-badge" style="background:rgba(45,212,160,0.15);color:var(--stage-update);">5</div>
+          <div>
+            <div style="font-weight:700;color:var(--text-primary);font-size:0.9rem;">Update</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.2rem;">Apply edits to SKILL.md in memory using <code>append</code> / <code>replace</code> / <code>delete</code>. Nothing written to disk yet.</div>
+          </div>
+        </div>
+        <div class="loop-arrow">↓</div>
+        <div class="loop-stage" style="border-color:rgba(232,121,249,0.30);background:rgba(232,121,249,0.06);">
+          <div class="stage-badge" style="background:rgba(232,121,249,0.15);color:var(--stage-evaluate);">6</div>
+          <div>
+            <div style="font-weight:700;color:var(--stage-evaluate);font-size:0.9rem;">Evaluate — The Gate</div>
+            <div style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.2rem;">Re-run candidate on held-out eval split. Compare means. <strong style="color:var(--success);">Accept</strong> only if strictly better. <strong style="color:var(--error);">Reject</strong> → original unchanged.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="slide-footer">
+    <div class="nav-btns">
+      <a href="06-architecture.html" class="nav-btn nav-btn-prev">← Prev</a>
+      <a href="08-bizobj.html" class="nav-btn primary nav-btn-next">Next →</a>
+    </div>
+  </footer>
+
+  <script src="../js/nav.js"></script>
+  <script>mermaid.initialize({startOnLoad:true,theme:'base',themeVariables:{background:'#2d2b24',primaryColor:'#D97757',primaryTextColor:'#f2ede4',lineColor:'#D97757',fontFamily:'Inter, system-ui',fontSize:'12px'}});</script>
+</body>
+</html>

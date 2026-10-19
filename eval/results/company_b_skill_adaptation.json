@@ -1,0 +1,100 @@
+{
+  "experiment": "company_b_train_derived_skill_adaptation",
+  "status": "complete",
+  "split": "SELECTION",
+  "n_items": 4,
+  "input_policy": "gold extracted fields isolate coding; identical RAG for both versions",
+  "results": {
+    "v002": [
+      {
+        "id": "B-DOC-0113",
+        "gold_code": "6226-HO001",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6170-IT001",
+        "cited_rule": "Prestations IT et maintenance → code **6170-IT001** (TVA 19%)",
+        "latency_ms": 1834
+      },
+      {
+        "id": "B-DOC-0129",
+        "gold_code": "6226-HO001",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6170-IT001",
+        "cited_rule": "Prestations IT et maintenance → code **6170-IT001** (TVA 19%)",
+        "latency_ms": 1319
+      },
+      {
+        "id": "B-DOC-0066",
+        "gold_code": "6226-HO001",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6170-IT001",
+        "cited_rule": "Prestations IT et maintenance → code **6170-IT001** (TVA 19%)",
+        "latency_ms": 1702
+      },
+      {
+        "id": "B-DOC-0036",
+        "gold_code": "6226-HO001",
+        "parse_ok": true,
+        "score": 0,
+        "predicted_code": "6226-HO001",
+        "cited_rule": "Honoraires consultants → code **6226-HO001** (TVA 19%)",
+        "latency_ms": 1164
+      }
+    ],
+    "v003": [
+      {
+        "id": "B-DOC-0113",
+        "gold_code": "6226-HO001",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6226-HO001",
+        "cited_rule": "Company B policy: TechVision consulting and audit services → 6226-HO001",
+        "latency_ms": 1069
+      },
+      {
+        "id": "B-DOC-0129",
+        "gold_code": "6226-HO001",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6226-HO001",
+        "cited_rule": "Company B policy: TechVision consulting and audit services → 6226-HO001",
+        "latency_ms": 1599
+      },
+      {
+        "id": "B-DOC-0066",
+        "gold_code": "6226-HO001",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6226-HO001",
+        "cited_rule": "Company B policy: TechVision consulting and audit services → 6226-HO001",
+        "latency_ms": 1728
+      },
+      {
+        "id": "B-DOC-0036",
+        "gold_code": "6226-HO001",
+        "parse_ok": true,
+        "score": 1,
+        "predicted_code": "6226-HO001",
+        "cited_rule": "Company B policy: TechVision consulting and audit services → 6226-HO001",
+        "latency_ms": 1194
+      }
+    ]
+  },
+  "summary": {
+    "v002": {
+      "n": 4,
+      "parse_rate": 1.0,
+      "code_accuracy": 0.25,
+      "supported_coder_score": 0.0
+    },
+    "v003": {
+      "n": 4,
+      "parse_rate": 1.0,
+      "code_accuracy": 1.0,
+      "supported_coder_score": 1.0
+    }
+  },
+  "paired_delta": 1.0
+}

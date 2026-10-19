@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document Desk — Slide 06: Architecture</title>
+  <link rel="stylesheet" href="../styles/global.css">
+  <!-- Mermaid -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    .mermaid-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 1rem;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <header class="slide-header">
+    <nav>
+      <a href="../index.html" class="nav-menu-link">Menu</a>
+      <span class="slide-counter">Slide 6 of 12</span>
+    </nav>
+    <div class="progress-bar-track"><div class="progress-bar-fill" style="width:50%"></div></div>
+  </header>
+
+  <main class="slide-content">
+
+    <div class="fade-up">
+      <span class="pill pill-accent">Architecture</span>
+      <h2 class="mt-sm">Two planes, one pipeline.</h2>
+    </div>
+
+    <div style="display:flex;gap:0.6rem;margin-top:0.75rem;" class="fade-up-1">
+      <span class="pill pill-serving">Serving — n8n</span>
+      <span class="pill pill-training">Training — FastAPI + SkillOpt</span>
+      <span class="pill pill-human">Human Review</span>
+    </div>
+
+    <div class="mermaid-wrap mt-lg fade-up-2">
+      <div class="mermaid">
+%%{init: {"theme": "base", "themeVariables": {
+  "background": "#2d2b24",
+  "primaryColor": "#3b82f6",
+  "primaryTextColor": "#f2ede4",
+  "primaryBorderColor": "#3a4060",
+  "lineColor": "#D97757",
+  "secondaryColor": "#2dd4a0",
+  "tertiaryColor": "#E0A03E",
+  "edgeLabelBackground": "#373530",
+  "clusterBkg": "#252420",
+  "clusterBorder": "#D97757",
+  "titleColor": "#f2ede4",
+  "fontFamily": "Inter, system-ui",
+  "fontSize": "13px",
+  "nodeBorder": "#3a4060",
+  "nodeTextColor": "#f2ede4"
+}}}%%
+flowchart LR
+  subgraph SP ["⚡ SERVING PLANE — n8n"]
+    direction LR
+    T["📥 Trigger\nwebhook · email · file"]
+    P["🔍 Parser\nOCR · speech-to-text"]
+    E["📦 Extractor\nvendor · amount · date"]
+    CA["🤖 Coding Agent\nSKILL.md + RAG"]
+    V["✅ Validator\nduplicates · totals · tax"]
+  end
+
+  subgraph OUT ["📤 OUTPUT"]
+    direction TB
+    TS["💾 Trace Store\nvalid path"]
+    HR["👤 Human Review\nexception path"]
+  end
+
+  subgraph TP ["🔄 TRAINING PLANE — FastAPI"]
+    direction LR
+    SO["⚙️ SkillOpt Loop\nrollout → reflect → gate"]
+    SR["📋 Skill Registry\nversions · active ptr"]
+    HA["🙋 Human Approval\noptional promote gate"]
+  end
+
+  T --> P --> E --> CA --> V
+  V -->|"valid"| TS
+  V -->|"exception"| HR
+  TS -->|"new traces"| SO
+  SO <-->|"read/write"| SR
+  SR --> HA
+  HA -->|"active skill"| CA
+
+  style SP fill:#1a3a5c,stroke:#60a5fa,stroke-width:1.5px,color:#f2ede4
+  style TP fill:#1a3d30,stroke:#2dd4a0,stroke-width:1.5px,color:#f2ede4
+  style OUT fill:#2d2b24,stroke:#3a4060,stroke-width:1px,color:#f2ede4
+      </div>
+    </div>
+
+    <div class="highlight-box mt-md fade-up-3" style="margin-bottom:0;">
+      <p>The <strong>Trace Store feeds the Training Plane</strong> — every document processed improves the skill. Better skill = fewer exceptions = less human review.</p>
+    </div>
+
+  </main>
+
+  <footer class="slide-footer">
+    <div class="nav-btns">
+      <a href="05-coreidea.html" class="nav-btn nav-btn-prev">← Prev</a>
+      <a href="07-skillopt.html" class="nav-btn primary nav-btn-next">Next →</a>
+    </div>
+  </footer>
+
+  <script src="../js/nav.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        background: '#2d2b24',
+        primaryColor: '#3b82f6',
+        primaryTextColor: '#f2ede4',
+        lineColor: '#D97757',
+        secondaryColor: '#2dd4a0',
+        tertiaryColor: '#E0A03E',
+        edgeLabelBackground: '#373530',
+        clusterBkg: '#252420',
+        fontFamily: 'Inter, system-ui',
+        fontSize: '13px'
+      }
+    });
+  </script>
+</body>
+</html>

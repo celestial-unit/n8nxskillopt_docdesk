@@ -1,0 +1,70 @@
+% ============================================================
+%  Section 10 — Dashboard
+% ============================================================
+\section{Monitoring Dashboard}
+\label{sec:ui}
+
+The React dashboard (Next.js, TypeScript, Tailwind) gives full visibility into
+every pipeline run without touching a terminal. It starts automatically with
+\texttt{python run.py}.
+
+\subsection{Command Center}
+
+The primary page. A user uploads a PDF or photo, picks a company, and clicks
+Run. The file goes to the n8n webhook; the UI polls \texttt{GET /trace/\{doc\_id\}}
+every 500\,ms and lights up the stage cards as each agent completes:
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize},
+  card/.style={draw, rounded corners=4pt, minimum width=1.45cm,
+               minimum height=0.75cm, thick, align=center},
+  arr/.style={-Stealth, thin, gray},
+]
+  \node[card, fill=C3!20, draw=C3]  (r) at (0,0)   {Router\\{\tiny\color{C3}$\checkmark$ 142ms}};
+  \node[card, fill=C3!20, draw=C3]  (e) at (1.7,0) {Extractor\\{\tiny\color{C3}$\checkmark$ 1688ms}};
+  \node[card, fill=C3!20, draw=C3]  (c) at (3.4,0) {Coder\\{\tiny\color{C3}$\checkmark$ 2341ms}};
+  \node[card, fill=C2!20, draw=C2]  (v) at (5.1,0) {Validator\\{\tiny\color{C2}running}};
+  \node[card, fill=gray!10, draw=C6](d) at (6.8,0) {Decision\\{\tiny\color{C6}pending}};
+
+  \draw[arr](r)--(e); \draw[arr](e)--(c);
+  \draw[arr](c)--(v); \draw[arr](v)--(d);
+
+  \node[below=0.5cm, font=\tiny, color=C1] at (3.4,-0.05)
+    {Polling \texttt{/trace} every 500\,ms};
+\end{tikzpicture}
+\caption{Command Center stage cards during live processing. A green
+\textbf{\textcolor{accepted}{ACCEPTED}} or red
+\textbf{\textcolor{escalated}{ESCALATED}} badge appears at the end.}
+\label{fig:stage_cards}
+\end{figure}
+
+\subsection{Operations — Document Table}
+
+A searchable, auto-refreshing table of every processed document. Columns:
+supplier, date, document number, HTVA / TVA / TTC amounts, account code assigned,
+decision, and processing time. Clicking a row opens a detail drawer with the full
+step trace, line-item table, RAG chunks with similarity scores, and validation
+result. An \textbf{Export CSV} button downloads all fields as a spreadsheet.
+
+\subsection{Intelligence — Scores and RAG}
+
+Shows measured retrieval and agent scores, while the dedicated Skill History
+section reports SkillOpt's live status, selection score, model-token usage,
+step decisions, previous runs, and versioned runtime skills. Only a strict
+held-out gain can promote a proposed skill. The manually authored v003 Coder
+experiment remains separate from the library's extractor optimization.
+
+\subsection{Email and Drive intake}
+
+The active n8n workflow includes Gmail attachment and Google Drive file-created
+branches. Each source normalizes supported PDFs and images into the same
+pipeline as webhook uploads. Those polling nodes remain disabled in the local
+instance until Google OAuth credentials and the watched Drive folder are
+configured; the setup steps are in \texttt{n8n/INTAKE\_SETUP.md}.
+
+\subsection{Systems — Health Monitor}
+
+Real-time polling of FastAPI, n8n, Qdrant, and the LLM endpoint with green/red
+status indicators. Any degraded component is immediately visible.

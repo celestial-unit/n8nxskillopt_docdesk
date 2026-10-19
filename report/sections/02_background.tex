@@ -1,0 +1,77 @@
+% ============================================================
+%  Section 2 — Background
+% ============================================================
+\section{Background and Related Work}
+\label{sec:background}
+
+\subsection{LLM-Based Document Processing}
+
+Early document processing pipelines relied on OCR plus rule templates — brittle,
+format-specific, and expensive to maintain. The shift toward LLMs brought
+zero-shot extraction quality competitive with trained classifiers~\cite{li2023structuredext},
+but introduced new failure modes: hallucinated field values, unstable output format,
+and insensitivity to company-specific constraints.
+
+Recent benchmarks~\cite{invoicellm2024,ocrornot2025} show that \emph{native
+image input} to multimodal LLMs often outperforms OCR-then-text pipelines,
+especially when document layout carries semantic meaning. For Tunisian documents
+specifically, the challenge is the French number format (\textit{1\,011,500}),
+the mandatory Timbre Fiscal line, and the \textit{matricule fiscal} (7 digits plus
+a letter) — none of which appear in the training corpora of general-purpose models.
+
+Prompt design is the dominant lever. A study on Spanish electricity invoices found
+that few-shot prompting outperformed zero-shot by 19 percentage points in
+F1~\cite{electricityinvoice2025}, reaching 97.6\% with Gemini. This motivates our
+use of SkillOpt to automate that prompt iteration.
+
+\subsection{Retrieval-Augmented Generation}
+
+RAG~\cite{lewis2020rag} conditions LLM generation on retrieved evidence. It can
+reduce unsupported answers when retrieval succeeds, but it also introduces
+retrieval errors and does not eliminate hallucinations. For account code assignment, the
+knowledge base is small (20–50 rules per company) but the required precision is
+high: one wrong code has direct financial consequences.
+
+The standard pipeline — embed query, retrieve top-k, inject into prompt — has a
+known weakness: dense retrieval struggles with exact keywords (account numbers,
+supplier names). Modern production RAG stacks address this with:
+
+\begin{itemize}[leftmargin=*, itemsep=2pt]
+  \item \textbf{Hybrid search}: BM25 keyword search merged with dense vector
+        search via Reciprocal Rank Fusion (RRF)~\cite{rrf2009}.
+  \item \textbf{Reranking}: a cross-encoder (e.g., \texttt{bge-reranker-v2-m3})
+        jointly scores query and each retrieved chunk for precision~\cite{bgem3}.
+  \item \textbf{BGE-M3}~\cite{bgem3}: a single model that simultaneously supports
+        dense, sparse, and multi-vector retrieval in 100+ languages, making it a
+        natural upgrade for Tunisian (French/Arabic) documents.
+\end{itemize}
+
+\subsection{Multi-Agent LLM Systems}
+
+Multi-agent frameworks such as AutoGen~\cite{autogen2023} and LangGraph decompose
+complex workflows into specialized, independently-improvable agents. n8n adds a
+visual orchestration layer with built-in HTTP retry and error branches — removing
+the need to write orchestration code and making the workflow auditable at a glance.
+
+\subsection{SkillOpt: Text-Space Prompt Optimization}
+
+SkillOpt~\cite{skillopt2024} is a Microsoft Research system that treats the agent
+skill file (system prompt) as a trainable parameter. The target LLM generates
+rollouts on training examples; an optimizer LLM turns failed rollouts into bounded
+add/delete/replace edits to the skill; a held-out validation gate accepts edits
+only if they improve the score. Across six benchmarks and seven models, SkillOpt
+achieves the best or tied-best result in all 52 evaluated cells, improving average
+accuracy by +23.5 points over the no-skill baseline~\cite{skillopt2024}.
+
+SkillOpt-Lite~\cite{skilloptlite2025} — a follow-up that formalizes skill
+optimization as Zeroth-Order optimization — further reduces the number of rollouts
+needed for convergence, achieving +25.4 points on GPT-5.4-nano with fewer steps.
+
+\subsection{Tunisian Accounting Context}
+
+The Tunisian \textit{Système Comptable des Entreprises} (SCE)~\cite{sce1997}
+organizes expense accounts in Class~6 (codes 60x–65x). VAT rates are 7\%,
+13\%, or 19\% depending on product category. Every commercial document must
+include a Timbre Fiscal (fiscal stamp) line and the supplier's matricule fiscal.
+DocDesk models both companies on the SCE structure; account numbers used here
+are unverified against the official source.

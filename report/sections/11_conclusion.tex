@@ -1,0 +1,38 @@
+% ============================================================
+%  Section 11 — Conclusion
+% ============================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+DocDesk is a company-adaptive accounting automation prototype built around an
+n8n workflow, specialized agents, company-filtered RAG, multimodal document
+intake, deterministic validation, human review, and an SQLite audit ledger. Its
+central design choice is to keep company-specific accounting behavior in
+versioned skills so that changes can be inspected and measured without
+fine-tuning model weights.
+
+The existing end-to-end baseline shows higher observed Coder scores with RAG for both
+companies, although absolute scores are low and the small rule corpus weakens
+the retrieval evaluation. A paired Company B prompt comparison on ten SELECTION
+documents raised code accuracy from 7/10 to 9/10 and supported code-plus-citation
+from 2/10 to 6/10. It used gold extracted fields and identical RAG, so it
+isolates Coder behavior rather than end-to-end processing; the result remains
+small-sample selection evidence. The integrated SkillOpt
+run processed balanced 12-document TRAIN and SELECTION samples. Initial
+extraction scored 1.00 on both in its adapter, despite the broader Company B
+Extractor baseline of 0.31. This discrepancy remains unresolved and the two
+figures are not directly comparable. All three failure-only steps found no
+patches; the optimizer made no edit and produced no accuracy improvement.
+
+The main engineering result is a working multi-stage prototype with measurable
+baseline behavior, a narrowly scoped manual prompt comparison, and an integrated
+SkillOpt loop. A separate deliberately weak-prompt showcase improved soft NEM
+from 0.02 to 0.17 on ten held-out documents, but exact match remained 0/10 for
+both versions; this is partial-field progress, not reliable extraction. Before operational use, the
+project needs comparable end-to-end evaluation, a larger rule-level retrieval
+test, audited business rules, and production security controls.
+
+\section*{Acknowledgments}
+This work uses n8n, Qdrant, sentence-transformers, SkillOpt, and synthetic
+French-language accounting documents. The charts of accounts are fictional
+and must not be treated as verified Tunisian accounting advice.

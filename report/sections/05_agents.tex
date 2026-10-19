@@ -1,0 +1,117 @@
+% ============================================================
+%  Section 5 — Agents
+% ============================================================
+\section{Agent Design}
+\label{sec:agents}
+
+Each agent loads its system prompt from a versioned Markdown file at
+\texttt{skills/<company>/<agent>/vNNN.md}. The loaded version is logged in
+SQLite traces, making the prompt used for a decision inspectable. Agents are
+independent: updating the Extractor skill does not touch the Coder or Validator.
+
+\subsection{LLM Client}
+
+The LLM-calling stages use a shared \texttt{LLMClient} that wraps Azure AI
+Foundry and OpenAI-compatible endpoints; the deterministic Router does not call
+an LLM. Provider and model roles are configured through environment variables.
+The current client configuration:
+\begin{itemize}[leftmargin=*, itemsep=1pt]
+  \item Sets temperature to 0 for model calls.
+  \item Reads reasoning effort per role from configuration; the reported
+        baseline and latency benchmark used \texttt{reasoning\_effort=none}.
+  \item Removes returned reasoning content before passing text downstream;
+        the client logs an approximate word count when that content is present.
+  \item With \texttt{DEMO\_CACHE=1}, responses are cached by a SHA-256 hash
+        of the full prompt. Cache hits incur zero network calls — useful for
+        reproducible demos.
+\end{itemize}
+
+\subsection{Router}
+
+The \agent{Router} determines the document type (\textit{invoice}, \textit{receipt},
+\textit{purchase\_order}) and input modality (\textit{text} or \textit{photo}).
+In our current implementation it is a deterministic Code node in n8n using file
+extension and keyword matching — no LLM call. This avoids a model request but
+can misroute files with unfamiliar extensions or ambiguous text; it is not
+fail-proof.
+
+\subsection{Extractor}
+
+The \agent{Extractor} converts a document into a structured JSON object with all
+fields the Validator and Coder need: supplier, date, document number, each line item
+with its amounts, HTVA, TVA, TTC, Timbre Fiscal, and the matricule fiscal.
+For text-layer PDFs, text is extracted via \texttt{pypdf}. For photos, the image
+is sent to the vision deployment and the model's transcription is treated as the
+text input.
+
+The skill prompt uses four techniques:
+\begin{enumerate}[leftmargin=*, itemsep=1pt]
+  \item \textbf{Role prompting} — ``You are an expert Tunisian accounting clerk.''
+  \item \textbf{Structured output schema} — the expected JSON schema is listed
+        in the system prompt with field names and types.
+  \item \textbf{Format guardrails} — explicit instructions for the TND amount
+        format, the matricule fiscal pattern, and the date format.
+  \item \textbf{Termination instruction} — ``Respond only with the JSON object,
+        no explanatory text.''
+\end{enumerate}
+
+\subsection{Coder}
+
+The \agent{Coder} assigns a ledger account code and cites the rule it used. Before
+the LLM call, the Coder retrieves the five most relevant rule chunks from Qdrant
+(filtered to the current company) and injects them into the system prompt. The
+score is binary: 1.0 if the code matches the gold label \emph{and} the cited rule
+appears as a substring in the retrieved chunks or skill file; 0.0 otherwise. This
+is a mechanical support check. It does not verify that the cited text semantically
+justifies the code, so the metric is weaker than a human audit of the rationale.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\scriptsize},
+  box/.style={draw, rounded corners=3pt, minimum width=2.1cm,
+              minimum height=0.6cm, thick, align=center},
+  arr/.style={-Stealth, thick},
+]
+  \node[box, fill=C5!15, draw=C5]  (q)  at (0,0)    {Supplier + doc type\\(query)};
+  \node[box, fill=C5!25, draw=C5]  (qd) at (3.2,0)  {Qdrant search\\top-5 chunks};
+  \node[box, fill=C1!15, draw=C1]  (sk) at (0,-1.4) {Skill file\\v001.md};
+  \node[box, fill=C1!25, draw=C1]  (lm) at (3.2,-1.4){LLM\\(1 call)};
+  \node[box, fill=C3!20, draw=C3]  (out)at (3.2,-2.8){account\_code\\+ cited\_rule};
+
+  \draw[arr] (q)  -- node[above, font=\scriptsize]{retrieve} (qd);
+  \draw[arr] (qd) -- node[right, font=\tiny]{inject chunks} (lm);
+  \draw[arr] (sk) -- node[below, font=\tiny]{system prompt} (lm);
+  \draw[arr] (lm) -- (out);
+\end{tikzpicture}
+\caption{Coder agent flow: RAG retrieves relevant rules, which are injected
+alongside the skill prompt into a single LLM call.}
+\label{fig:coder_flow}
+\end{figure}
+
+\subsection{Validator}
+
+The \agent{Validator} runs in two phases. First, three deterministic Python checks
+run without any LLM call:
+\begin{itemize}[leftmargin=*, itemsep=1pt]
+  \item Arithmetic: $|\text{HTVA} + \text{TVA} - \text{TTC}| \leq 0.005$ currency units.
+  \item Matricule fiscal present and non-empty.
+  \item A duplicate marker check if \texttt{duplicate\_of} is present in the extracted payload.
+\end{itemize}
+If any check fails, a single LLM call generates a one-sentence explanation for
+the human reviewer, and \texttt{needs\_review} is set to \texttt{true}.
+
+Alongside the supplied \texttt{duplicate\_of} marker, the API registers a
+normalized company, supplier, invoice-number, and date key in SQLite; a match
+identifies the earlier document and routes the new item for review. Replays of
+the same document ID are idempotent. Keeping validation logic in Python rather than delegating it to the LLM is a
+deliberate choice: arithmetic at a 0.005 currency-unit tolerance is computed in Python and
+unreliable in an LLM, especially for Tunisian formatting with three decimal places.
+
+\subsection{Exception Handler}
+
+When the Validator raises a flag, the \agent{Exception Handler} prepares a
+structured escalation dossier: a summary of the errors, the recommended action
+(correct the arithmetic / re-request the document / contact the supplier), and
+the responsible contact. This is stored as a JSON object in SQLite for later
+review; the current workflow does not send an external notification to a reviewer.

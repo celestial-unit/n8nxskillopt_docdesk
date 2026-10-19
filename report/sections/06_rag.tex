@@ -1,0 +1,46 @@
+% ============================================================
+%  Section 6 — RAG Engine
+% ============================================================
+\section{RAG Engine}
+\label{sec:rag}
+
+\subsection{Retrieval Design}
+
+The Coder uses retrieval to ground account assignment in a company's own
+accounting rules. The local knowledge base contains a chart of accounts and
+topic-level Markdown policy sources per company. Inference embeds a query built
+from supplier, document type, and description; Qdrant returns up to five chunks
+filtered by \texttt{company\_id}. Retrieved text is passed alongside the
+company's versioned Coder skill. The embedding model is
+\texttt{paraphrase-multilingual-mpnet-base-v2} (768 dimensions), and the vector
+store runs locally in embedded mode.
+
+The implementation supports two chunkers. The default fixed-window strategy
+uses 512 tokens with a 64-token overlap. The heading-based strategy groups
+Markdown sections up to 1024 tokens. These choices are recorded for comparison;
+the present corpus is too small to establish a winning strategy.
+
+\subsection{What the Retrieval Evaluation Establishes}
+
+Twenty hand-written queries per company were evaluated against expected policy
+source filenames. With fixed chunks, source-level Recall@5 is 1.00 for both
+companies; MRR@5 is 0.9167 for Company A and 0.8875 for Company B. With heading
+based chunks, Recall@5 remains 1.00; MRR@5 is 0.9167 and 0.8500, respectively.
+The fixed corpus contains 9 Company A chunks and 11 Company B chunks; the
+heading corpus contains 9 and 10.
+
+These figures should not be read as rule-level retrieval accuracy. The corpus
+is still small relative to top-k=5, and the label only checks whether the
+expected policy source appears; it does not identify the correct rule within
+that source. Recall@5 is therefore saturated, and this small comparison does
+not support a chunking winner. The evaluation verifies that company-filtered
+retrieval returns the expected source, but it does not show that the best rule
+ranks first or that retrieval improves accounting decisions.
+
+The coding ablation in \cref{tab:baseline_main} is separate evidence: on the
+reported selection runs, Coder score with retrieval was 0.30 for Company A and
+0.21 for Company B, versus 0.10 and 0.00 without retrieval. These are low
+absolute scores on synthetic data and do not isolate retrieval quality from
+model and prompt errors. A stronger next evaluation should split the knowledge
+base into individual rule chunks, label relevant rule IDs for each query, and
+report Recall@k, MRR, and per-query examples on a larger rule set.

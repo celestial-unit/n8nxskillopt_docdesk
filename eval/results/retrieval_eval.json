@@ -1,0 +1,641 @@
+{
+  "company_a": {
+    "recall_at_5": 1.0,
+    "mrr_at_5": 0.9167,
+    "n_queries": 20,
+    "n_chunks": 9,
+    "sources": [
+      "chart_of_accounts.md",
+      "banking.md",
+      "fuel.md",
+      "it_services.md",
+      "office_supplies.md",
+      "public_utilities.md",
+      "purchases.md",
+      "tax_and_stamp.md",
+      "telecommunications.md"
+    ],
+    "per_query": [
+      {
+        "query": "Comment codifier une facture STEG électricité ?",
+        "expected_sources": [
+          "public_utilities.md"
+        ],
+        "retrieved_sources": [
+          "public_utilities.md",
+          "chart_of_accounts.md",
+          "it_services.md",
+          "purchases.md",
+          "fuel.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Quel code utiliser pour une facture d'eau SONEDE ?",
+        "expected_sources": [
+          "public_utilities.md"
+        ],
+        "retrieved_sources": [
+          "public_utilities.md",
+          "chart_of_accounts.md",
+          "purchases.md",
+          "office_supplies.md",
+          "telecommunications.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Code comptable pour Tunisie Telecom téléphone internet",
+        "expected_sources": [
+          "telecommunications.md"
+        ],
+        "retrieved_sources": [
+          "telecommunications.md",
+          "public_utilities.md",
+          "banking.md",
+          "chart_of_accounts.md",
+          "tax_and_stamp.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Facture carburant station Total ou Shell",
+        "expected_sources": [
+          "fuel.md"
+        ],
+        "retrieved_sources": [
+          "fuel.md",
+          "purchases.md",
+          "public_utilities.md",
+          "office_supplies.md",
+          "chart_of_accounts.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Prestation informatique SysTech Solutions quel compte ?",
+        "expected_sources": [
+          "it_services.md"
+        ],
+        "retrieved_sources": [
+          "it_services.md",
+          "office_supplies.md",
+          "chart_of_accounts.md",
+          "banking.md",
+          "fuel.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Fournitures de bureau Monoprix code de compte",
+        "expected_sources": [
+          "office_supplies.md"
+        ],
+        "retrieved_sources": [
+          "office_supplies.md",
+          "it_services.md",
+          "banking.md",
+          "chart_of_accounts.md",
+          "tax_and_stamp.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Timbre fiscal code comptable Tunisia",
+        "expected_sources": [
+          "tax_and_stamp.md"
+        ],
+        "retrieved_sources": [
+          "public_utilities.md",
+          "telecommunications.md",
+          "tax_and_stamp.md",
+          "banking.md",
+          "chart_of_accounts.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.3333333333333333
+      },
+      {
+        "query": "TVA 19% factures fournisseurs Company A",
+        "expected_sources": [
+          "tax_and_stamp.md"
+        ],
+        "retrieved_sources": [
+          "tax_and_stamp.md",
+          "chart_of_accounts.md",
+          "purchases.md",
+          "public_utilities.md",
+          "office_supplies.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "What account code for STEG electricity bill?",
+        "expected_sources": [
+          "public_utilities.md"
+        ],
+        "retrieved_sources": [
+          "public_utilities.md",
+          "it_services.md",
+          "chart_of_accounts.md",
+          "banking.md",
+          "fuel.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "How to code a telecom invoice Ooredoo?",
+        "expected_sources": [
+          "telecommunications.md"
+        ],
+        "retrieved_sources": [
+          "telecommunications.md",
+          "office_supplies.md",
+          "it_services.md",
+          "public_utilities.md",
+          "banking.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "IT services InfoPro accounting code",
+        "expected_sources": [
+          "it_services.md"
+        ],
+        "retrieved_sources": [
+          "it_services.md",
+          "office_supplies.md",
+          "banking.md",
+          "public_utilities.md",
+          "tax_and_stamp.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Carrefour Tunisie office supplies account",
+        "expected_sources": [
+          "office_supplies.md"
+        ],
+        "retrieved_sources": [
+          "office_supplies.md",
+          "telecommunications.md",
+          "banking.md",
+          "fuel.md",
+          "public_utilities.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Charges exploitation classe 6 SCE tunisien",
+        "expected_sources": [
+          "chart_of_accounts.md"
+        ],
+        "retrieved_sources": [
+          "public_utilities.md",
+          "chart_of_accounts.md",
+          "telecommunications.md",
+          "purchases.md",
+          "banking.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.5
+      },
+      {
+        "query": "Plan comptable achats marchandises",
+        "expected_sources": [
+          "purchases.md"
+        ],
+        "retrieved_sources": [
+          "purchases.md",
+          "office_supplies.md",
+          "chart_of_accounts.md",
+          "banking.md",
+          "tax_and_stamp.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Compte 606100 libellé description",
+        "expected_sources": [
+          "chart_of_accounts.md"
+        ],
+        "retrieved_sources": [
+          "chart_of_accounts.md",
+          "public_utilities.md",
+          "purchases.md",
+          "office_supplies.md",
+          "fuel.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Prestations extérieures services bancaires compte",
+        "expected_sources": [
+          "banking.md"
+        ],
+        "retrieved_sources": [
+          "banking.md",
+          "office_supplies.md",
+          "it_services.md",
+          "telecommunications.md",
+          "tax_and_stamp.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "DataSys SARL maintenance informatique",
+        "expected_sources": [
+          "it_services.md"
+        ],
+        "retrieved_sources": [
+          "it_services.md",
+          "chart_of_accounts.md",
+          "public_utilities.md",
+          "office_supplies.md",
+          "tax_and_stamp.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "facture Orange Tunisie internet mobile",
+        "expected_sources": [
+          "telecommunications.md"
+        ],
+        "retrieved_sources": [
+          "telecommunications.md",
+          "public_utilities.md",
+          "chart_of_accounts.md",
+          "office_supplies.md",
+          "purchases.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "SCE class 6 accounts Tunisia chart",
+        "expected_sources": [
+          "chart_of_accounts.md"
+        ],
+        "retrieved_sources": [
+          "public_utilities.md",
+          "chart_of_accounts.md",
+          "telecommunications.md",
+          "it_services.md",
+          "tax_and_stamp.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.5
+      },
+      {
+        "query": "code for purchase order fuel station",
+        "expected_sources": [
+          "fuel.md"
+        ],
+        "retrieved_sources": [
+          "fuel.md",
+          "purchases.md",
+          "chart_of_accounts.md",
+          "public_utilities.md",
+          "office_supplies.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      }
+    ]
+  },
+  "company_b": {
+    "recall_at_5": 1.0,
+    "mrr_at_5": 0.8875,
+    "n_queries": 20,
+    "n_chunks": 11,
+    "sources": [
+      "chart_of_accounts.md",
+      "banking.md",
+      "fuel.md",
+      "insurance.md",
+      "it_and_equipment.md",
+      "office_supplies.md",
+      "public_utilities.md",
+      "purchases.md",
+      "tax_and_stamp.md",
+      "telecommunications.md"
+    ],
+    "per_query": [
+      {
+        "query": "Facture STEG électricité Company B quel code ?",
+        "expected_sources": [
+          "public_utilities.md"
+        ],
+        "retrieved_sources": [
+          "public_utilities.md",
+          "fuel.md",
+          "chart_of_accounts.md",
+          "it_and_equipment.md",
+          "office_supplies.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Facture SONEDE eau taux TVA 7%",
+        "expected_sources": [
+          "public_utilities.md"
+        ],
+        "retrieved_sources": [
+          "tax_and_stamp.md",
+          "public_utilities.md",
+          "chart_of_accounts.md",
+          "banking.md",
+          "office_supplies.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.5
+      },
+      {
+        "query": "Téléphone internet Ooredoo code 6261-TE001",
+        "expected_sources": [
+          "telecommunications.md"
+        ],
+        "retrieved_sources": [
+          "telecommunications.md",
+          "chart_of_accounts.md",
+          "it_and_equipment.md",
+          "chart_of_accounts.md",
+          "public_utilities.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Carburant Station Total 13% TVA",
+        "expected_sources": [
+          "fuel.md"
+        ],
+        "retrieved_sources": [
+          "fuel.md",
+          "tax_and_stamp.md",
+          "chart_of_accounts.md",
+          "public_utilities.md",
+          "office_supplies.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "EuroTech imported merchandise account code 6010-AC001",
+        "expected_sources": [
+          "purchases.md"
+        ],
+        "retrieved_sources": [
+          "purchases.md",
+          "chart_of_accounts.md",
+          "office_supplies.md",
+          "chart_of_accounts.md",
+          "insurance.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Assurances AssurPlus Courtage code 6161",
+        "expected_sources": [
+          "insurance.md"
+        ],
+        "retrieved_sources": [
+          "insurance.md",
+          "chart_of_accounts.md",
+          "chart_of_accounts.md",
+          "office_supplies.md",
+          "telecommunications.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Timbre fiscal exonéré TVA code 6370",
+        "expected_sources": [
+          "tax_and_stamp.md"
+        ],
+        "retrieved_sources": [
+          "tax_and_stamp.md",
+          "it_and_equipment.md",
+          "chart_of_accounts.md",
+          "chart_of_accounts.md",
+          "banking.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Services bancaires frais commissions TVA 13%",
+        "expected_sources": [
+          "banking.md"
+        ],
+        "retrieved_sources": [
+          "banking.md",
+          "tax_and_stamp.md",
+          "chart_of_accounts.md",
+          "telecommunications.md",
+          "it_and_equipment.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "What code for STEG invoice Company B?",
+        "expected_sources": [
+          "public_utilities.md"
+        ],
+        "retrieved_sources": [
+          "public_utilities.md",
+          "insurance.md",
+          "it_and_equipment.md",
+          "banking.md",
+          "office_supplies.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "EuroTech imported goods account code",
+        "expected_sources": [
+          "purchases.md"
+        ],
+        "retrieved_sources": [
+          "purchases.md",
+          "chart_of_accounts.md",
+          "office_supplies.md",
+          "banking.md",
+          "telecommunications.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "insurance premium accounting code Tunisia",
+        "expected_sources": [
+          "insurance.md"
+        ],
+        "retrieved_sources": [
+          "insurance.md",
+          "telecommunications.md",
+          "tax_and_stamp.md",
+          "chart_of_accounts.md",
+          "banking.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "fuel purchase 13% VAT account code",
+        "expected_sources": [
+          "fuel.md"
+        ],
+        "retrieved_sources": [
+          "fuel.md",
+          "tax_and_stamp.md",
+          "chart_of_accounts.md",
+          "public_utilities.md",
+          "purchases.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Plan comptable Company B format 6010-CC001",
+        "expected_sources": [
+          "chart_of_accounts.md"
+        ],
+        "retrieved_sources": [
+          "office_supplies.md",
+          "chart_of_accounts.md",
+          "insurance.md",
+          "banking.md",
+          "it_and_equipment.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.5
+      },
+      {
+        "query": "Amortissements matériel informatique code",
+        "expected_sources": [
+          "chart_of_accounts.md"
+        ],
+        "retrieved_sources": [
+          "it_and_equipment.md",
+          "chart_of_accounts.md",
+          "chart_of_accounts.md",
+          "office_supplies.md",
+          "tax_and_stamp.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.5
+      },
+      {
+        "query": "Honoraires consultants compte 6226",
+        "expected_sources": [
+          "chart_of_accounts.md"
+        ],
+        "retrieved_sources": [
+          "chart_of_accounts.md",
+          "banking.md",
+          "insurance.md",
+          "office_supplies.md",
+          "chart_of_accounts.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Orange Tunisie telecom internet facture",
+        "expected_sources": [
+          "telecommunications.md"
+        ],
+        "retrieved_sources": [
+          "telecommunications.md",
+          "chart_of_accounts.md",
+          "public_utilities.md",
+          "it_and_equipment.md",
+          "office_supplies.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Monoprix Carrefour fournitures bureau TVA 19%",
+        "expected_sources": [
+          "office_supplies.md"
+        ],
+        "retrieved_sources": [
+          "office_supplies.md",
+          "chart_of_accounts.md",
+          "tax_and_stamp.md",
+          "purchases.md",
+          "insurance.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Conseil Audit Beta honoraires codification",
+        "expected_sources": [
+          "chart_of_accounts.md"
+        ],
+        "retrieved_sources": [
+          "chart_of_accounts.md",
+          "tax_and_stamp.md",
+          "banking.md",
+          "insurance.md",
+          "chart_of_accounts.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "Computer maintenance account code 6170-IT001",
+        "expected_sources": [
+          "it_and_equipment.md"
+        ],
+        "retrieved_sources": [
+          "it_and_equipment.md",
+          "chart_of_accounts.md",
+          "insurance.md",
+          "telecommunications.md",
+          "office_supplies.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0
+      },
+      {
+        "query": "accounts structure NNNN-CCNNN format Belgium B",
+        "expected_sources": [
+          "chart_of_accounts.md"
+        ],
+        "retrieved_sources": [
+          "office_supplies.md",
+          "banking.md",
+          "purchases.md",
+          "chart_of_accounts.md",
+          "telecommunications.md"
+        ],
+        "recall_at_5": 1.0,
+        "mrr_at_5": 0.25
+      }
+    ]
+  }
+}

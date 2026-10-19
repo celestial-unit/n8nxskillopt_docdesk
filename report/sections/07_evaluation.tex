@@ -1,0 +1,139 @@
+% ============================================================
+%  Section 7 — Evaluation
+% ============================================================
+\section{Evaluation}
+\label{sec:evaluation}
+
+The agent baseline comes from pipeline runs on the SELECTION set (30 synthetic
+documents per company, 60 total) using skill version v001. Vision and latency
+figures come from separate, smaller synthetic benchmarks. They describe these
+fixtures and should not be interpreted as production performance.
+
+\subsection{Metrics}
+
+\textbf{Extractor NEM} (Normalized Exact Match): fraction of gold fields for
+which the predicted value, after stripping whitespace, lowercasing, and converting
+French number format to decimal, exactly matches the gold label.
+
+\textbf{Coder Score}: binary — 1.0 only if the account code matches the gold
+label and the cited string appears in a retrieved chunk or skill file. This is a
+substring check; it does not establish that the citation semantically supports
+the decision.
+
+\textbf{Validator F-$\beta$} ($\beta\!=\!\sqrt{2}$): a weighted F-score where
+missing an error (false negative) costs twice as much as a false alarm (false
+positive). This reflects the accounting domain: an undetected arithmetic error
+is worse than an unnecessary escalation.
+
+\textbf{Vision accuracy}: fraction of key fields (supplier, document number, TTC)
+correctly read from synthetic degraded images, measured on 12 generated
+documents.
+
+\subsection{LLM Health Check}
+
+Before running any agents, a doctor script validates the model:
+
+\begin{table}[ht]
+\caption{LLM health check results (Kimi-K2.5, \texttt{reasoning\_effort=none})}
+\label{tab:doctor}
+\centering\scriptsize\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Check} & \textbf{Result} & \textbf{Pass?} \\
+\midrule
+Vision accuracy — supplier (N=12)    & 12/12 = 100\% & \checkmark \\
+Vision accuracy — TTC (N=12)         & 12/12 = 100\% & \checkmark \\
+Reasoning tokens in agent calls      & 0             & \checkmark \\
+Extractor median latency (N=10)      & 1{,}688\,ms   & \checkmark \\
+Extractor p95 latency                & 2{,}765\,ms   & \checkmark \\
+JSON parse rate (text docs, N=10)    & 10/10 = 100\% & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+In this sample, the vision model read the three reported fields correctly on all
+12 generated images, and the text benchmark parsed JSON on all 10 documents.
+These small, synthetic checks do not establish general image or extraction
+accuracy. The 1.688\,s median is Extractor latency only; end-to-end latency was
+not measured in this benchmark.
+
+\subsection{Baseline Results}
+
+\begin{table}[ht]
+\caption{Baseline scores on SELECTION set, skill v001 (real runs)}
+\label{tab:baseline_main}
+\centering\scriptsize\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+\textbf{Company} & \textbf{Coder+RAG}
+                 & \textbf{Coder\,\,noRAG} & \textbf{Val.\,$F_\beta$} \\
+\midrule
+Company A (N=30) & 0.300 & 0.100 & 0.108 \\
+Company B (N=30) & 0.205 & 0.000 & 0.000 \\
+\midrule
+Macro average    & 0.253 & 0.050 & 0.054 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The earlier Extractor NEM values are omitted. The baseline scorer treated
+unsupported or mis-mapped fields as errors; the corrected scorer is available,
+but the full baseline has not been rerun, so no corrected aggregate is claimed.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=\columnwidth, height=5.2cm,
+  ybar, bar width=0.32cm,
+  ymin=0, ymax=1.0,
+  ylabel={Score},
+  ylabel style={font=\scriptsize},
+  symbolic x coords={Coder+RAG, Coder\,noRAG, Val.\,$F_\beta$},
+  xtick=data,
+  x tick label style={font=\scriptsize, rotate=12, anchor=east},
+  tick label style={font=\scriptsize},
+  legend style={font=\scriptsize, at={(0.97,0.97)}, anchor=north east,
+                legend columns=2},
+  grid=major, grid style={dashed, gray!25},
+  enlarge x limits=0.15,
+]
+\addplot[fill=C1!70, draw=C1]   coordinates {
+  (Coder+RAG,0.300)(Coder\,noRAG,0.100)(Val.\,$F_\beta$,0.108)};
+\addplot[fill=C2!70, draw=C2]   coordinates {
+  (Coder+RAG,0.205)(Coder\,noRAG,0.000)(Val.\,$F_\beta$,0.000)};
+\legend{Company A, Company B}
+\end{axis}
+\end{tikzpicture}
+\caption{Baseline agent scores per company on the SELECTION set (skill v001,
+real pipeline runs). The with/without-RAG comparison is a small observational
+ablation, not a general causal estimate.}
+\label{fig:baseline_bars}
+\end{figure}
+
+\subsection{What the Numbers Mean}
+
+\textbf{Extractor.} The previously reported 0.61 / 0.31 values are withdrawn.
+The baseline scorer counted a benchmark-only reference field and failed to map
+line descriptions from the production nested schema. The evaluation needs to be
+rerun with the corrected scorer before an Extractor baseline can be reported.
+
+\textbf{Coder 0.30 / 0.21 with RAG.}
+These are low scores from earlier full-pipeline runs. A new paired prompt
+comparison isolated Company B coding with gold extracted fields and identical
+top-5 RAG context on 10 fixed SELECTION documents. Code accuracy rose from
+7/10 to 9/10; the stricter correct-code-plus-supported-citation score rose
+from 2/10 to 6/10. The improved prompt won four cases, lost none, and tied six.
+This small selection sample is promising but is neither a full-corpus nor a
+held-out TEST result. The older v001/v002 comparison remains rate-limited and
+inconclusive. See \cref{sec:skillopt} and
+\url{eval/results/company_b_coder_improvement.json}.
+
+\textbf{Validator F-$\beta$ 0.11 / 0.00.}
+These low scores show that validation and the baseline evaluator need further
+work. We do not claim that a later code change improved them because no
+comparable rerun is available. A useful next experiment should report
+per-check precision and recall as well as the aggregate F-score.
+
+The reported retrieval figures are source-level and saturated because each
+company has only two or three chunks. See \cref{sec:rag} for the metric limits.

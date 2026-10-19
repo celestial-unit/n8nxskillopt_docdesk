@@ -1,0 +1,45 @@
+# Focused SkillOpt run: Company B TechVision invoices.
+# TRAIN proposes skill edits; SELECTION is used only by the library's gate.
+model:
+  backend: openai_compatible
+  optimizer_openai_compatible_model: Kimi-K2.5
+  target_openai_compatible_model: Kimi-K2.5
+  optimizer_openai_compatible_temperature: 0.0
+  optimizer_openai_compatible_max_tokens: 4096
+  target_openai_compatible_temperature: 0.0
+  target_openai_compatible_max_tokens: 4096
+
+train:
+  num_epochs: 1
+  batch_size: 4
+  accumulation: 1
+  seed: 42
+
+gradient:
+  minibatch_size: 4
+  merge_batch_size: 4
+  analyst_workers: 1
+  failure_only: true
+
+optimizer:
+  learning_rate: 2
+
+evaluation:
+  sel_env_num: 1
+  test_env_num: 1
+  eval_test: true
+  use_gate: true
+  gate_metric: soft
+
+env:
+  name: docdesk_extractor
+  out_root: skillopt_output/company_b_extractor
+  skill_init: skills/company_b/extractor/v001.md
+  split_dir: skillopt_data/company_b_balanced
+  seed: 42
+  limit: 0
+  workers: 1
+  analyst_workers: 1
+  minibatch_size: 4
+  edit_budget: 2
+  max_completion_tokens: 4096

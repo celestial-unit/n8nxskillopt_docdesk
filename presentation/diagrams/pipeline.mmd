@@ -1,0 +1,5 @@
+flowchart LR
+  IN["New document"] --> ROUTE["Route by type"] --> EXTRACT["Extract fields"] --> CODE["Code with company RAG"] --> CHECK{"Validation passes?"}
+  CHECK -->|yes| ACCEPT["Accepted · audited"]
+  CHECK -->|review| HUMAN["Human review"]
+  EXTRACT -. "provider retry / failure trace" .-> RETRY["Retry or mark failed"]
